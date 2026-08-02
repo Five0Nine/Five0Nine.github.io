@@ -657,10 +657,10 @@ sup > a::before,
 }
 #nprogress .bar {
   height: 2px !important;
-  background-color: #00f0ff !important;
+  background-color: #1f654f !important;
 }
 #nprogress .peg {
-  box-shadow: 0 0 14px #00f0ff, 0 0 8px #00f0ff !important;
+  box-shadow: 0 0 14px #1f654f, 0 0 8px #1f654f !important;
 }
 @media (max-width: 575px) {
   #nprogress .bar {
@@ -889,13 +889,13 @@ sup > a::before,
   padding: 3rem 0;
 }
 html {
-  font-size: 17px;
+  font-size: 16px;
   letter-spacing: 0.02em;
 }
 html,
 body {
   height: 100%;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
   overflow-wrap: break-word;
 }
 body {
@@ -961,27 +961,27 @@ body.mobile-menu-open {
 }
 :root {
   --color-mode: "light";
-  --body-bg-color: #000000;
-  --board-bg-color: #0c0c14;
-  --text-color: #e0e0e8;
-  --sec-text-color: #8888a8;
-  --post-text-color: #e0e0e8;
-  --post-heading-color: #e0e0e8;
-  --post-link-color: #00f0ff;
-  --link-hover-color: #00f0ff;
-  --link-hover-bg-color: rgba(0,240,255,0.08);
-  --line-color: #1a1a2e;
-  --navbar-bg-color: #08080c;
-  --navbar-text-color: #e0e0e8;
-  --subtitle-color: #e0e0e8;
-  --scrollbar-color: #1a1a2e;
-  --scrollbar-hover-color: #2a2a4a;
+  --body-bg-color: #f4f5ed;
+  --board-bg-color: #fbfbf6;
+  --text-color: #263d37;
+  --sec-text-color: #677771;
+  --post-text-color: #35443f;
+  --post-heading-color: #18322e;
+  --post-link-color: #1f654f;
+  --link-hover-color: #174c3c;
+  --link-hover-bg-color: rgba(31,101,79,0.08);
+  --line-color: #cad2c6;
+  --navbar-bg-color: #f4f5ed;
+  --navbar-text-color: #18322e;
+  --subtitle-color: #f4f5ed;
+  --scrollbar-color: #c2cbc0;
+  --scrollbar-hover-color: #8fa096;
   --button-bg-color: transparent;
-  --button-hover-bg-color: rgba(0,240,255,0.08);
+  --button-hover-bg-color: rgba(31,101,79,0.08);
   --highlight-bg-color: #282c34;
   --inlinecode-bg-color: rgba(175,184,193,0.2);
-  --fold-title-color: #e0e0e8;
-  --fold-border-color: #1a1a2e;
+  --fold-title-color: #263d37;
+  --fold-border-color: #cad2c6;
 }
 .fade-in-up {
   -webkit-animation-name: fade-in-up;
@@ -1475,7 +1475,7 @@ figure.highlight td.code > pre {
 .markdown-body {
   font-size: 1rem;
   line-height: 1.6;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
   margin-bottom: 2rem;
   color: var(--post-text-color);
 }
