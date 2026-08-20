@@ -4,6 +4,66 @@
   
   
   <entry>
+    <title>TinyMix-CN：中文小型基座模型的从零预训练研究</title>
+    <link href="/2026/08/20/tinymix-cn/"/>
+    <url>/2026/08/20/tinymix-cn/</url>
+    
+    <content type="html"><![CDATA[<p>TinyMix-CN 是一个中文小型基座模型的从零预训练研究项目。它不追求训练一个大而全的模型，而是想在固定计算预算下回答三个更具体的问题：数据如何配比、重复与覆盖如何平衡，以及小模型或短训练得到的代理结论能否迁移到更长训练和更大模型。</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">数据许可与 Manifest → 去重和切分 → Tokenizer → Packing<br>→ 确定性 Schedule → 暴露账本 → BPB 与代理分析<br></code></pre></td></tr></table></figure><h2 id="当前实现"><a href="#当前实现" class="headerlink" title="当前实现"></a>当前实现</h2><p>截至 2026 年 8 月，项目已经完成并验证非训练工程链：</p><ul><li>正式数据的固定版本、文件哈希、许可证审计、去重聚类和无原文 Manifest；</li><li>从零训练的 byte-level BPE、等 token 采样与重计数 sidecar；</li><li>可追溯的离线 packing、二进制 shard、确定性双域 schedule 与暴露账本；</li><li>从原始 NLL 到分域&#x2F;宏平均 BPB，以及代理回归、regret、bootstrap 等分析工具；</li><li>不可覆盖的实验骨架、产物哈希绑定、cursor checkpoint 与恢复 smoke；</li><li>完整 toy 流水线、22 项测试、ruff、mypy 和覆盖率检查。</li></ul><h2 id="当前边界"><a href="#当前边界" class="headerlink" title="当前边界"></a>当前边界</h2><p>正式数据审计覆盖 183,598 条记录，其中 183,247 条许可证仍需人工确认，351 条被阻止，当前可训练条目为 0，因此数据闸门 G0 目前是 <code>blocked</code>。</p><p>在许可证结论明确前，项目不会生成正式 Tokenizer 或 Pack，也不会租用 GPU、下载模型权重、执行正式训练或发布研究结论。当前成果是可复现的预训练输入与分析基础设施，不是已经训练完成的基座模型；闸门通过后，才会进入 LitGPT 训练适配、断点等价验证和正式实验阶段。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>项目</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Python</tag>
+      
+      <tag>大模型</tag>
+      
+      <tag>Pretraining</tag>
+      
+      <tag>Data</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>ContextRecoveryBench：让 Agent 的失败恢复可以被测量</title>
+    <link href="/2026/08/20/context-recovery-bench/"/>
+    <url>/2026/08/20/context-recovery-bench/</url>
+    
+    <content type="html"><![CDATA[<p>ContextRecoveryBench（CRBench）是一个面向软件工程 Agent 的本地研究 Harness。它关注的问题是：在相同任务、相同 Agent 和固定 token 预算下，保留哪些失败证据，才更有可能帮助 Agent 从错误中恢复？</p><p>项目会把 Agent、工具、执行器和验证器的运行过程保存为不可变事件，再用不同上下文策略生成下一轮输入，并通过独立验证器衡量任务成功、失败恢复、重复失败和关键证据保留。</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">TaskSpec → Agent / 工具轨迹 → 上下文策略 → 独立验证 → 回放与报告<br></code></pre></td></tr></table></figure><h2 id="当前实现"><a href="#当前实现" class="headerlink" title="当前实现"></a>当前实现</h2><p>本地 v0.1 已完成一条可离线运行的完整纵切：</p><ul><li>6 种可比较的上下文策略，包括 Last-N、token recency、状态摘要和 failure-aware；</li><li>不可变 JSONL 轨迹、artifact 引用与 ContextBundle 来源记录；</li><li>失败 signature、失败链分析与预算越界保护；</li><li>10 个受控软件修复任务、隐藏测试和独立 verifier；</li><li>单次运行、回放、重新评分、静态报告和顺序配对实验编排。</li></ul><p><code>crbench</code> CLI 可以在不接入模型 API 的情况下完成演示和质量验证；Docker 执行器与真实 Agent 也预留了独立接入层。</p><h2 id="当前边界"><a href="#当前边界" class="headerlink" title="当前边界"></a>当前边界</h2><p>离线 scripted Agent 只用于验证 Harness 本身，并不代表真实模型能力。项目目前没有声称 failure-aware 策略已经提高真实 Agent 的成功率，也没有把一次命令成功包装成研究结论。</p><p>下一阶段需要在 Docker 隔离环境中接入真实 Agent，登记模型、预算、成本和任务顺序，再通过受控配对实验回答不同上下文策略是否真的改善失败恢复。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>项目</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Agent</tag>
+      
+      <tag>Evaluation</tag>
+      
+      <tag>Python</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Notion 批量导出 PDF：递归读取与高保真渲染</title>
     <link href="/2026/08/02/notion-batch-exporter/"/>
     <url>/2026/08/02/notion-batch-exporter/</url>
@@ -20,9 +80,9 @@
     
     <tags>
       
-      <tag>Notion</tag>
-      
       <tag>Python</tag>
+      
+      <tag>Notion</tag>
       
       <tag>PDF</tag>
       
