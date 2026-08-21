@@ -611,7 +611,6 @@
     stageButtons: Array.from(root.querySelectorAll('[data-stage-button]')),
     phaseCards: Array.from(root.querySelectorAll('[data-phase-card]')),
     phaseButtons: Array.from(root.querySelectorAll('[data-phase-jump]')),
-    layerButtons: Array.from(root.querySelectorAll('[data-layer-button]')),
     tabButtons: Array.from(root.querySelectorAll('[data-detail-tab]')),
     phaseCounter: root.querySelector('[data-phase-counter]'),
     counter: root.querySelector('[data-stage-counter]'),
@@ -629,11 +628,6 @@
     packetDirection: root.querySelector('[data-packet-direction]'),
     envelope: root.querySelector('[data-envelope]'),
     fieldChange: root.querySelector('[data-field-change]'),
-    layerFocus: root.querySelector('[data-layer-focus]'),
-    layerFocusTitle: root.querySelector('[data-layer-focus-title]'),
-    layerFocusFrom: root.querySelector('[data-layer-focus-from]'),
-    layerFocusTo: root.querySelector('[data-layer-focus-to]'),
-    layerFocusCopy: root.querySelector('[data-layer-focus-copy]'),
     devices: Array.from(root.querySelectorAll('[data-device]')),
     state: [
       root.querySelector('[data-state-data]'),
@@ -660,7 +654,6 @@
 
   let currentStage = 0;
   let currentTab = 'event';
-  let selectedLayer = 'application';
   let timer = null;
   let playing = false;
 
@@ -727,83 +720,12 @@
     }).join('');
   }
 
-  function focusPacketLayer(layer) {
-    Array.from(elements.envelope.querySelectorAll('[data-envelope-layer]')).forEach(function (field) {
-      const active = field.dataset.envelopeLayer === layer;
-      field.classList.toggle('is-focus', active);
-      field.classList.toggle('is-dim', !active);
-    });
-  }
-
   function updateTabButtons() {
     elements.tabButtons.forEach(function (button) {
       const active = button.dataset.detailTab === currentTab;
       button.classList.toggle('is-active', active);
       button.setAttribute('aria-selected', String(active));
     });
-  }
-
-  function setActiveLayer(layer) {
-    elements.layerButtons.forEach(function (button) {
-      const active = button.dataset.layerButton === layer;
-      button.classList.toggle('is-active', active);
-      button.setAttribute('aria-pressed', String(active));
-    });
-  }
-
-  const deviceLabels = {
-    client: '用户主机',
-    switch: '交换机',
-    router: '默认网关',
-    internet: '下一跳路由器',
-    server: 'Web 服务器',
-    dns: 'DNS 服务器',
-    dhcp: 'DHCP 服务器'
-  };
-
-  function remoteEndpointForStage() {
-    if (currentStage === 0) return 'dhcp';
-    if (currentStage === 2) return 'dns';
-    return 'server';
-  }
-
-  function layerEndpoints(layer) {
-    if (layer === 'application' || layer === 'transport' || layer === 'network') {
-      return ['client', remoteEndpointForStage()];
-    }
-    if (layer === 'link') {
-      if (currentStage === 9) return ['router', 'internet'];
-      if (currentStage === 10) return ['internet', 'server'];
-      if (currentStage === 11) return ['server', 'internet'];
-      return ['client', 'router'];
-    }
-    if (currentStage === 8) return ['switch', 'router'];
-    if (currentStage === 9) return ['router', 'internet'];
-    if (currentStage === 10) return ['internet', 'server'];
-    if (currentStage === 11) return ['server', 'internet'];
-    return ['client', 'switch'];
-  }
-
-  function applyLayerFocus() {
-    const overview = layerOverviews[selectedLayer];
-    const endpoints = layerEndpoints(selectedLayer);
-    if (!overview) return;
-
-    root.classList.add('is-layer-view');
-    root.dataset.focusLayer = selectedLayer;
-    elements.layerFocusTitle.textContent = overview.focusTitle;
-    elements.layerFocusFrom.textContent = deviceLabels[endpoints[0]];
-    elements.layerFocusTo.textContent = deviceLabels[endpoints[1]];
-    elements.layerFocusCopy.textContent = overview.focusCopy;
-
-    elements.devices.forEach(function (device) {
-      const endpoint = endpoints.indexOf(device.dataset.device) !== -1;
-      device.classList.toggle('is-layer-relevant', endpoint);
-      device.classList.toggle('is-active', endpoint);
-    });
-
-    setActiveLayer(selectedLayer);
-    focusPacketLayer(selectedLayer);
   }
 
   function renderStage() {
@@ -830,6 +752,10 @@
       elements.state[index].textContent = value;
     });
 
+    elements.devices.forEach(function (device) {
+      device.classList.toggle('is-active', stage.devices.indexOf(device.dataset.device) !== -1);
+    });
+
     elements.stageButtons.forEach(function (button, index) {
       const active = index === currentStage;
       button.classList.toggle('is-active', active);
@@ -853,7 +779,6 @@
       }
     });
 
-    applyLayerFocus();
     renderDetail(stage);
     resetAnswer(stage);
     elements.prev.disabled = currentStage === 0;
@@ -861,19 +786,13 @@
 
     const phaseTrack = activePhaseCard && activePhaseCard.closest('.nj-phase-track');
     if (phaseTrack) {
-      const targetLeft = Math.max(0, activePhaseCard.offsetLeft - phaseTrack.offsetLeft - 12);
+      const targetTop = Math.max(0, activePhaseCard.offsetTop - phaseTrack.offsetTop - 8);
       if (typeof phaseTrack.scrollTo === 'function') {
-        phaseTrack.scrollTo({ left: targetLeft, behavior: 'smooth' });
+        phaseTrack.scrollTo({ top: targetTop, behavior: 'smooth' });
       } else {
-        phaseTrack.scrollLeft = targetLeft;
+        phaseTrack.scrollTop = targetTop;
       }
     }
-  }
-
-  function selectLayer(layer) {
-    if (!layerOverviews[layer]) return;
-    selectedLayer = layer;
-    applyLayerFocus();
   }
 
   function setStage(index, shouldPause) {
@@ -929,12 +848,6 @@
     });
   });
 
-  elements.layerButtons.forEach(function (button) {
-    button.addEventListener('click', function () {
-      selectLayer(button.dataset.layerButton);
-    });
-  });
-
   elements.tabButtons.forEach(function (button) {
     button.addEventListener('click', function () {
       currentTab = button.dataset.detailTab;
@@ -956,9 +869,9 @@
   elements.branchButtons.forEach(function (button) {
     button.addEventListener('click', function () {
       setStage(Number(button.dataset.jumpStage), true);
-      const progressPanel = root.querySelector('.nj-progress-panel');
-      if (progressPanel && typeof progressPanel.scrollIntoView === 'function') {
-        progressPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const workspace = root.querySelector('.nj-workspace');
+      if (workspace && typeof workspace.scrollIntoView === 'function') {
+        workspace.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
   });

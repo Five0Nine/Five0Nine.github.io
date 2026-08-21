@@ -344,7 +344,7 @@
       <a class="nj-back" href="/#projects"><span aria-hidden="true">←</span> 返回项目档案</a>
       <p class="nj-eyebrow">INTERACTIVE PROJECT · COMPUTER NETWORK · 408</p>
       <h1>一条 Web 请求的旅程</h1>
-      <p>跟随同一份数据，从输入网址到网页显示。流程继续向前，五层协议栈则像一组可以随时停下观察的镜头。</p>
+      <p>跟随同一份数据，从输入网址到网页显示。左侧步骤保持整条主线可见，中间画面展示当前报文与设备变化。</p>
       <div class="nj-mainline-sentence">
         <span>唯一主线</span>
         <strong>准备目标 → 建立通信 → 封装并逐跳传输 → 接收并返回</strong>
@@ -363,181 +363,145 @@
     <div class="nj-progress-track" aria-hidden="true">
       <span data-progress-bar></span>
     </div>
-    <ol class="nj-phase-track" aria-label="一次 Web 请求的四个阶段">
-      
-        <li class="nj-phase-card is-active" data-phase-card="0" data-phase-start="0" data-phase-end="2" data-phase-label="准备访问目标">
-          <button type="button" class="nj-phase-heading" data-phase-jump="0" aria-current="step">
-            <span>PHASE 01</span>
-            <strong>准备访问目标</strong>
-            <small>网络参数 · URL · DNS</small>
-          </button>
-          <ol class="nj-phase-steps">
-            
-              <li>
-                <button type="button" data-stage-button="0" class="is-active" aria-current="step">
-                  <span>01</span>
-                  <strong>网络参数（按需）</strong>
-                </button>
-              </li>
-            
-              <li>
-                <button type="button" data-stage-button="1" class="" aria-current="false">
-                  <span>02</span>
-                  <strong>解析 URL</strong>
-                </button>
-              </li>
-            
-              <li>
-                <button type="button" data-stage-button="2" class="" aria-current="false">
-                  <span>03</span>
-                  <strong>DNS 查询</strong>
-                </button>
-              </li>
-            
-          </ol>
-        </li>
-      
-        <li class="nj-phase-card " data-phase-card="1" data-phase-start="3" data-phase-end="4" data-phase-label="建立应用通信">
-          <button type="button" class="nj-phase-heading" data-phase-jump="3" aria-current="false">
-            <span>PHASE 02</span>
-            <strong>建立应用通信</strong>
-            <small>TCP 连接 · HTTP 请求</small>
-          </button>
-          <ol class="nj-phase-steps">
-            
-              <li>
-                <button type="button" data-stage-button="3" class="" aria-current="false">
-                  <span>04</span>
-                  <strong>TCP 握手</strong>
-                </button>
-              </li>
-            
-              <li>
-                <button type="button" data-stage-button="4" class="" aria-current="false">
-                  <span>05</span>
-                  <strong>HTTP 请求</strong>
-                </button>
-              </li>
-            
-          </ol>
-        </li>
-      
-        <li class="nj-phase-card " data-phase-card="2" data-phase-start="5" data-phase-end="9" data-phase-label="封装并逐跳传输">
-          <button type="button" class="nj-phase-heading" data-phase-jump="5" aria-current="false">
-            <span>PHASE 03</span>
-            <strong>封装并逐跳传输</strong>
-            <small>IP → 帧 → 比特 → 交换与路由</small>
-          </button>
-          <ol class="nj-phase-steps">
-            
-              <li>
-                <button type="button" data-stage-button="5" class="" aria-current="false">
-                  <span>06</span>
-                  <strong>生成 IP 分组</strong>
-                </button>
-              </li>
-            
-              <li>
-                <button type="button" data-stage-button="6" class="" aria-current="false">
-                  <span>07</span>
-                  <strong>ARP 与封帧</strong>
-                </button>
-              </li>
-            
-              <li>
-                <button type="button" data-stage-button="7" class="" aria-current="false">
-                  <span>08</span>
-                  <strong>发送比特</strong>
-                </button>
-              </li>
-            
-              <li>
-                <button type="button" data-stage-button="8" class="" aria-current="false">
-                  <span>09</span>
-                  <strong>交换机转发</strong>
-                </button>
-              </li>
-            
-              <li>
-                <button type="button" data-stage-button="9" class="" aria-current="false">
-                  <span>10</span>
-                  <strong>路由器逐跳</strong>
-                </button>
-              </li>
-            
-          </ol>
-        </li>
-      
-        <li class="nj-phase-card " data-phase-card="3" data-phase-start="10" data-phase-end="11" data-phase-label="接收、处理并返回">
-          <button type="button" class="nj-phase-heading" data-phase-jump="10" aria-current="false">
-            <span>PHASE 04</span>
-            <strong>接收、处理并返回</strong>
-            <small>解封装 · HTTP 响应</small>
-          </button>
-          <ol class="nj-phase-steps">
-            
-              <li>
-                <button type="button" data-stage-button="10" class="" aria-current="false">
-                  <span>11</span>
-                  <strong>服务器解封装</strong>
-                </button>
-              </li>
-            
-              <li>
-                <button type="button" data-stage-button="11" class="" aria-current="false">
-                  <span>12</span>
-                  <strong>响应返回</strong>
-                </button>
-              </li>
-            
-          </ol>
-        </li>
-      
-    </ol>
   </section>
 
   <main class="nj-workspace">
-    <aside class="nj-layer-panel" aria-labelledby="nj-layer-title">
+    <aside class="nj-journey-panel" aria-labelledby="nj-journey-title">
       <div class="nj-panel-heading">
-        <p>PROTOCOL STACK</p>
-        <h2 id="nj-layer-title">五层协议栈</h2>
+        <p>MAINLINE NAVIGATOR</p>
+        <h2 id="nj-journey-title">主线步骤</h2>
       </div>
-
-      <div class="nj-layer-stack">
+      <ol class="nj-phase-track" aria-label="一次 Web 请求的四个阶段">
         
-          <button type="button" data-layer-button="application" class="is-active">
-            <span>01</span>
-            <strong>应用层</strong>
-            <small>应用报文</small>
-          </button>
+          <li class="nj-phase-card is-active" data-phase-card="0" data-phase-start="0" data-phase-end="2" data-phase-label="准备访问目标">
+            <button type="button" class="nj-phase-heading" data-phase-jump="0" aria-current="step">
+              <span>PHASE 01</span>
+              <strong>准备访问目标</strong>
+              <small>网络参数 · URL · DNS</small>
+            </button>
+            <ol class="nj-phase-steps">
+              
+                <li>
+                  <button type="button" data-stage-button="0" class="is-active" aria-current="step">
+                    <span>01</span>
+                    <strong>网络参数（按需）</strong>
+                  </button>
+                </li>
+              
+                <li>
+                  <button type="button" data-stage-button="1" class="" aria-current="false">
+                    <span>02</span>
+                    <strong>解析 URL</strong>
+                  </button>
+                </li>
+              
+                <li>
+                  <button type="button" data-stage-button="2" class="" aria-current="false">
+                    <span>03</span>
+                    <strong>DNS 查询</strong>
+                  </button>
+                </li>
+              
+            </ol>
+          </li>
         
-          <button type="button" data-layer-button="transport" class="">
-            <span>02</span>
-            <strong>传输层</strong>
-            <small>TCP 报文段</small>
-          </button>
+          <li class="nj-phase-card " data-phase-card="1" data-phase-start="3" data-phase-end="4" data-phase-label="建立应用通信">
+            <button type="button" class="nj-phase-heading" data-phase-jump="3" aria-current="false">
+              <span>PHASE 02</span>
+              <strong>建立应用通信</strong>
+              <small>TCP 连接 · HTTP 请求</small>
+            </button>
+            <ol class="nj-phase-steps">
+              
+                <li>
+                  <button type="button" data-stage-button="3" class="" aria-current="false">
+                    <span>04</span>
+                    <strong>TCP 握手</strong>
+                  </button>
+                </li>
+              
+                <li>
+                  <button type="button" data-stage-button="4" class="" aria-current="false">
+                    <span>05</span>
+                    <strong>HTTP 请求</strong>
+                  </button>
+                </li>
+              
+            </ol>
+          </li>
         
-          <button type="button" data-layer-button="network" class="">
-            <span>03</span>
-            <strong>网络层</strong>
-            <small>IP 分组</small>
-          </button>
+          <li class="nj-phase-card " data-phase-card="2" data-phase-start="5" data-phase-end="9" data-phase-label="封装并逐跳传输">
+            <button type="button" class="nj-phase-heading" data-phase-jump="5" aria-current="false">
+              <span>PHASE 03</span>
+              <strong>封装并逐跳传输</strong>
+              <small>IP → 帧 → 比特 → 交换与路由</small>
+            </button>
+            <ol class="nj-phase-steps">
+              
+                <li>
+                  <button type="button" data-stage-button="5" class="" aria-current="false">
+                    <span>06</span>
+                    <strong>生成 IP 分组</strong>
+                  </button>
+                </li>
+              
+                <li>
+                  <button type="button" data-stage-button="6" class="" aria-current="false">
+                    <span>07</span>
+                    <strong>ARP 与封帧</strong>
+                  </button>
+                </li>
+              
+                <li>
+                  <button type="button" data-stage-button="7" class="" aria-current="false">
+                    <span>08</span>
+                    <strong>发送比特</strong>
+                  </button>
+                </li>
+              
+                <li>
+                  <button type="button" data-stage-button="8" class="" aria-current="false">
+                    <span>09</span>
+                    <strong>交换机转发</strong>
+                  </button>
+                </li>
+              
+                <li>
+                  <button type="button" data-stage-button="9" class="" aria-current="false">
+                    <span>10</span>
+                    <strong>路由器逐跳</strong>
+                  </button>
+                </li>
+              
+            </ol>
+          </li>
         
-          <button type="button" data-layer-button="link" class="">
-            <span>04</span>
-            <strong>数据链路层</strong>
-            <small>以太网帧</small>
-          </button>
+          <li class="nj-phase-card " data-phase-card="3" data-phase-start="10" data-phase-end="11" data-phase-label="接收、处理并返回">
+            <button type="button" class="nj-phase-heading" data-phase-jump="10" aria-current="false">
+              <span>PHASE 04</span>
+              <strong>接收、处理并返回</strong>
+              <small>解封装 · HTTP 响应</small>
+            </button>
+            <ol class="nj-phase-steps">
+              
+                <li>
+                  <button type="button" data-stage-button="10" class="" aria-current="false">
+                    <span>11</span>
+                    <strong>服务器解封装</strong>
+                  </button>
+                </li>
+              
+                <li>
+                  <button type="button" data-stage-button="11" class="" aria-current="false">
+                    <span>12</span>
+                    <strong>响应返回</strong>
+                  </button>
+                </li>
+              
+            </ol>
+          </li>
         
-          <button type="button" data-layer-button="physical" class="">
-            <span>05</span>
-            <strong>物理层</strong>
-            <small>比特流</small>
-          </button>
-        
-      </div>
-
-      <p class="nj-layer-hint">选择一层后，通信两端与对应报文字段会在整条主线中持续高亮。</p>
+      </ol>
     </aside>
 
     <section class="nj-scene" aria-labelledby="nj-scene-title">
@@ -550,19 +514,6 @@
       </div>
 
       <p class="nj-stage-summary" data-stage-summary>浏览器访问网页以前，主机必须已有 IP、子网掩码、默认网关和 DNS 地址；只有刚接入或租约失效时才需要运行 DHCP。</p>
-
-      <section class="nj-layer-focus" data-layer-focus aria-live="polite">
-        <div class="nj-layer-focus-heading">
-          <span>LAYER FOCUS</span>
-          <strong data-layer-focus-title>应用层 · 应用进程之间</strong>
-        </div>
-        <div class="nj-layer-focus-route" aria-hidden="true">
-          <span data-layer-focus-from>用户主机</span>
-          <i><b></b></i>
-          <span data-layer-focus-to>DHCP 服务器</span>
-        </div>
-        <p data-layer-focus-copy>层级观察器会随主线保留，只突出当前层的两个通信端点和对应报文字段。</p>
-      </section>
 
       <div class="nj-topology" data-topology>
         <div class="nj-path-line" aria-hidden="true">
