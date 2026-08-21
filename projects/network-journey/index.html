@@ -1,0 +1,990 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#f4f5ed">
+  <meta name="author" content="Five0Nine">
+  <meta name="keywords" content="学习笔记, 项目, 随笔, 个人知识库">
+  
+    <meta name="description" content="跟随一次 HTTP 网页访问，交互式理解应用层、传输层、网络层、数据链路层与物理层如何协作。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="一条 Web 请求的旅程">
+<meta property="og:url" content="https://five0nine.github.io/projects/network-journey/index.html">
+<meta property="og:site_name" content="易钦">
+<meta property="og:description" content="跟随一次 HTTP 网页访问，交互式理解应用层、传输层、网络层、数据链路层与物理层如何协作。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-08-21T00:53:56.842Z">
+<meta property="article:modified_time" content="2026-08-21T00:53:56.842Z">
+<meta property="article:author" content="Five0Nine">
+<meta property="article:tag" content="学习笔记, 项目, 随笔, 个人知识库">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>一条 Web 请求的旅程 - 易钦</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/knowledge-map.css">
+<link rel="stylesheet" href="/css/network-journey.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"five0nine.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":2,"color":"#1f654f","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body class="page-network-journey">
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 0vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>YI QIN / 易钦</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/#notes" target="_self">
+                
+                <span>知识笔记</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/#projects" target="_self">
+                
+                <span>项目</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/#reflections" target="_self">
+                
+                <span>随笔</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/#notes" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>知识笔记</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/#projects" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>项目</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/#reflections" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>随笔</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/null') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="一条 Web 请求的旅程"></span>
+          
+        </div>
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<div class="nj-page" data-network-journey>
+  <header class="nj-hero">
+    <div class="nj-hero-copy">
+      <a class="nj-back" href="/#projects"><span aria-hidden="true">←</span> 返回项目档案</a>
+      <p class="nj-eyebrow">INTERACTIVE PROJECT · COMPUTER NETWORK · 408</p>
+      <h1>一条 Web 请求的旅程</h1>
+      <p>跟随同一份数据，从输入网址到网页显示。流程继续向前，五层协议栈则像一组可以随时停下观察的镜头。</p>
+      <div class="nj-mainline-sentence">
+        <span>唯一主线</span>
+        <strong>准备目标 → 建立通信 → 封装并逐跳传输 → 接收并返回</strong>
+      </div>
+    </div>
+
+  </header>
+
+  <section class="nj-progress-panel" aria-label="流程进度">
+    <div class="nj-progress-copy">
+      <span data-phase-counter>阶段 01 / 04</span>
+      <span data-stage-counter>步骤 01 / 12</span>
+      <strong data-progress-title>网络参数：已有则使用，首次接入时运行 DHCP</strong>
+      <span data-progress-percent>8%</span>
+    </div>
+    <div class="nj-progress-track" aria-hidden="true">
+      <span data-progress-bar></span>
+    </div>
+    <ol class="nj-phase-track" aria-label="一次 Web 请求的四个阶段">
+      
+        <li class="nj-phase-card is-active" data-phase-card="0" data-phase-start="0" data-phase-end="2" data-phase-label="准备访问目标">
+          <button type="button" class="nj-phase-heading" data-phase-jump="0" aria-current="step">
+            <span>PHASE 01</span>
+            <strong>准备访问目标</strong>
+            <small>网络参数 · URL · DNS</small>
+          </button>
+          <ol class="nj-phase-steps">
+            
+              <li>
+                <button type="button" data-stage-button="0" class="is-active" aria-current="step">
+                  <span>01</span>
+                  <strong>网络参数（按需）</strong>
+                </button>
+              </li>
+            
+              <li>
+                <button type="button" data-stage-button="1" class="" aria-current="false">
+                  <span>02</span>
+                  <strong>解析 URL</strong>
+                </button>
+              </li>
+            
+              <li>
+                <button type="button" data-stage-button="2" class="" aria-current="false">
+                  <span>03</span>
+                  <strong>DNS 查询</strong>
+                </button>
+              </li>
+            
+          </ol>
+        </li>
+      
+        <li class="nj-phase-card " data-phase-card="1" data-phase-start="3" data-phase-end="4" data-phase-label="建立应用通信">
+          <button type="button" class="nj-phase-heading" data-phase-jump="3" aria-current="false">
+            <span>PHASE 02</span>
+            <strong>建立应用通信</strong>
+            <small>TCP 连接 · HTTP 请求</small>
+          </button>
+          <ol class="nj-phase-steps">
+            
+              <li>
+                <button type="button" data-stage-button="3" class="" aria-current="false">
+                  <span>04</span>
+                  <strong>TCP 握手</strong>
+                </button>
+              </li>
+            
+              <li>
+                <button type="button" data-stage-button="4" class="" aria-current="false">
+                  <span>05</span>
+                  <strong>HTTP 请求</strong>
+                </button>
+              </li>
+            
+          </ol>
+        </li>
+      
+        <li class="nj-phase-card " data-phase-card="2" data-phase-start="5" data-phase-end="9" data-phase-label="封装并逐跳传输">
+          <button type="button" class="nj-phase-heading" data-phase-jump="5" aria-current="false">
+            <span>PHASE 03</span>
+            <strong>封装并逐跳传输</strong>
+            <small>IP → 帧 → 比特 → 交换与路由</small>
+          </button>
+          <ol class="nj-phase-steps">
+            
+              <li>
+                <button type="button" data-stage-button="5" class="" aria-current="false">
+                  <span>06</span>
+                  <strong>生成 IP 分组</strong>
+                </button>
+              </li>
+            
+              <li>
+                <button type="button" data-stage-button="6" class="" aria-current="false">
+                  <span>07</span>
+                  <strong>ARP 与封帧</strong>
+                </button>
+              </li>
+            
+              <li>
+                <button type="button" data-stage-button="7" class="" aria-current="false">
+                  <span>08</span>
+                  <strong>发送比特</strong>
+                </button>
+              </li>
+            
+              <li>
+                <button type="button" data-stage-button="8" class="" aria-current="false">
+                  <span>09</span>
+                  <strong>交换机转发</strong>
+                </button>
+              </li>
+            
+              <li>
+                <button type="button" data-stage-button="9" class="" aria-current="false">
+                  <span>10</span>
+                  <strong>路由器逐跳</strong>
+                </button>
+              </li>
+            
+          </ol>
+        </li>
+      
+        <li class="nj-phase-card " data-phase-card="3" data-phase-start="10" data-phase-end="11" data-phase-label="接收、处理并返回">
+          <button type="button" class="nj-phase-heading" data-phase-jump="10" aria-current="false">
+            <span>PHASE 04</span>
+            <strong>接收、处理并返回</strong>
+            <small>解封装 · HTTP 响应</small>
+          </button>
+          <ol class="nj-phase-steps">
+            
+              <li>
+                <button type="button" data-stage-button="10" class="" aria-current="false">
+                  <span>11</span>
+                  <strong>服务器解封装</strong>
+                </button>
+              </li>
+            
+              <li>
+                <button type="button" data-stage-button="11" class="" aria-current="false">
+                  <span>12</span>
+                  <strong>响应返回</strong>
+                </button>
+              </li>
+            
+          </ol>
+        </li>
+      
+    </ol>
+  </section>
+
+  <main class="nj-workspace">
+    <aside class="nj-layer-panel" aria-labelledby="nj-layer-title">
+      <div class="nj-panel-heading">
+        <p>PROTOCOL STACK</p>
+        <h2 id="nj-layer-title">五层协议栈</h2>
+      </div>
+
+      <div class="nj-layer-stack">
+        
+          <button type="button" data-layer-button="application" class="is-active">
+            <span>01</span>
+            <strong>应用层</strong>
+            <small>应用报文</small>
+          </button>
+        
+          <button type="button" data-layer-button="transport" class="">
+            <span>02</span>
+            <strong>传输层</strong>
+            <small>TCP 报文段</small>
+          </button>
+        
+          <button type="button" data-layer-button="network" class="">
+            <span>03</span>
+            <strong>网络层</strong>
+            <small>IP 分组</small>
+          </button>
+        
+          <button type="button" data-layer-button="link" class="">
+            <span>04</span>
+            <strong>数据链路层</strong>
+            <small>以太网帧</small>
+          </button>
+        
+          <button type="button" data-layer-button="physical" class="">
+            <span>05</span>
+            <strong>物理层</strong>
+            <small>比特流</small>
+          </button>
+        
+      </div>
+
+      <p class="nj-layer-hint">选择一层后，通信两端与对应报文字段会在整条主线中持续高亮。</p>
+    </aside>
+
+    <section class="nj-scene" aria-labelledby="nj-scene-title">
+      <div class="nj-scene-heading">
+        <div>
+          <p data-stage-kicker>STEP 01 · 按需完成接入准备</p>
+          <h2 id="nj-scene-title" data-stage-title>确认主机已有网络参数</h2>
+        </div>
+        <span class="nj-layer-badge" data-layer-badge>应用层 · 跨层过程</span>
+      </div>
+
+      <p class="nj-stage-summary" data-stage-summary>浏览器访问网页以前，主机必须已有 IP、子网掩码、默认网关和 DNS 地址；只有刚接入或租约失效时才需要运行 DHCP。</p>
+
+      <section class="nj-layer-focus" data-layer-focus aria-live="polite">
+        <div class="nj-layer-focus-heading">
+          <span>LAYER FOCUS</span>
+          <strong data-layer-focus-title>应用层 · 应用进程之间</strong>
+        </div>
+        <div class="nj-layer-focus-route" aria-hidden="true">
+          <span data-layer-focus-from>用户主机</span>
+          <i><b></b></i>
+          <span data-layer-focus-to>DHCP 服务器</span>
+        </div>
+        <p data-layer-focus-copy>层级观察器会随主线保留，只突出当前层的两个通信端点和对应报文字段。</p>
+      </section>
+
+      <div class="nj-topology" data-topology>
+        <div class="nj-path-line" aria-hidden="true">
+          <span class="nj-path-progress" data-path-progress></span>
+          <i class="nj-flow-pulse nj-flow-pulse-one"></i>
+          <i class="nj-flow-pulse nj-flow-pulse-two"></i>
+          <i class="nj-flow-pulse nj-flow-pulse-three"></i>
+        </div>
+        <div class="nj-packet" data-packet style="--packet-position: 2%">
+          <span data-packet-name>DHCP 报文</span>
+          <span class="nj-packet-stack" aria-hidden="true">
+            <i data-stack-layer="application">A</i>
+            <i data-stack-layer="transport">T</i>
+            <i data-stack-layer="network">N</i>
+            <i data-stack-layer="link">L</i>
+            <i data-stack-layer="physical">P</i>
+          </span>
+        </div>
+
+        <article class="nj-device nj-device-client is-active" data-device="client">
+          <span class="nj-device-icon" aria-hidden="true">H1</span>
+          <div>
+            <strong>用户主机</strong>
+            <small>浏览器与完整协议栈</small>
+          </div>
+        </article>
+
+        <article class="nj-device nj-device-switch" data-device="switch">
+          <span class="nj-device-icon" aria-hidden="true">S1</span>
+          <div>
+            <strong>交换机</strong>
+            <small>根据 MAC 转发</small>
+          </div>
+        </article>
+
+        <article class="nj-device nj-device-router" data-device="router">
+          <span class="nj-device-icon" aria-hidden="true">R1</span>
+          <div>
+            <strong>默认网关</strong>
+            <small>进入其他网络</small>
+          </div>
+        </article>
+
+        <article class="nj-device nj-device-router" data-device="internet">
+          <span class="nj-device-icon" aria-hidden="true">R2</span>
+          <div>
+            <strong>中间路由器</strong>
+            <small>逐跳选择下一跳</small>
+          </div>
+        </article>
+
+        <article class="nj-device nj-device-server" data-device="server">
+          <span class="nj-device-icon" aria-hidden="true">WEB</span>
+          <div>
+            <strong>Web 服务器</strong>
+            <small>解析 HTTP 请求</small>
+          </div>
+        </article>
+
+        <article class="nj-side-service nj-side-dns" data-device="dns">
+          <span>DNS</span>
+          <strong>域名服务器</strong>
+        </article>
+
+        <article class="nj-side-service nj-side-dhcp is-active" data-device="dhcp">
+          <span>DHCP</span>
+          <strong>配置服务器</strong>
+        </article>
+      </div>
+
+      <section class="nj-packet-lens" aria-labelledby="nj-packet-lens-title">
+        <div class="nj-packet-lens-heading">
+          <div>
+            <p>PACKET MICROSCOPE</p>
+            <h3 id="nj-packet-lens-title">报文透视镜</h3>
+          </div>
+          <span data-packet-direction>发送端 · 逐层封装</span>
+        </div>
+
+        <div class="nj-envelope" data-envelope aria-live="polite">
+          <article class="nj-envelope-field is-active" data-envelope-layer="application">
+            <span>应用层</span>
+            <strong>DHCP Discover</strong>
+            <code>请求网络参数</code>
+          </article>
+          <article class="nj-envelope-field" data-envelope-layer="transport">
+            <span>传输层</span>
+            <strong>UDP</strong>
+            <code>68 → 67</code>
+          </article>
+          <article class="nj-envelope-field" data-envelope-layer="network">
+            <span>网络层</span>
+            <strong>IPv4</strong>
+            <code>0.0.0.0 → 255.255.255.255</code>
+          </article>
+          <article class="nj-envelope-field" data-envelope-layer="link">
+            <span>链路层</span>
+            <strong>Ethernet</strong>
+            <code>目的 MAC：FF:FF:FF:FF:FF:FF</code>
+          </article>
+          <article class="nj-envelope-field" data-envelope-layer="physical">
+            <span>物理层</span>
+            <strong>Bits</strong>
+            <code>编码后通过介质发送</code>
+          </article>
+        </div>
+
+        <div class="nj-field-change">
+          <span>本步变化</span>
+          <p data-field-change>主机使用特殊源地址和广播目的地址完成首次网络配置。</p>
+        </div>
+        <p class="nj-example-note">页面中的 IP、端口和 MAC 均为固定示例，仅用于观察字段如何变化。</p>
+      </section>
+
+      <div class="nj-state-grid" aria-label="当前通信状态">
+        <article>
+          <span>当前数据</span>
+          <strong data-state-data>DHCP 应用报文</strong>
+        </article>
+        <article>
+          <span>使用标识</span>
+          <strong data-state-address>IP 广播 + MAC 广播</strong>
+        </article>
+        <article>
+          <span>处理设备</span>
+          <strong data-state-device>用户主机、DHCP 服务器</strong>
+        </article>
+        <article>
+          <span>异常由谁处理</span>
+          <strong data-state-safety>超时后重新尝试 DHCP</strong>
+        </article>
+      </div>
+    </section>
+
+    <aside class="nj-detail-panel" aria-labelledby="nj-detail-title">
+      <div class="nj-detail-topline">
+        <div>
+          <p data-detail-kicker>PAUSE & INSPECT</p>
+          <h2 id="nj-detail-title" data-detail-title>网络参数（按需）</h2>
+        </div>
+      </div>
+
+      <div class="nj-detail-tabs" role="tablist" aria-label="步骤详情">
+        <button type="button" role="tab" aria-selected="true" data-detail-tab="event" class="is-active">发生了什么</button>
+        <button type="button" role="tab" aria-selected="false" data-detail-tab="packet">报文变化</button>
+        <button type="button" role="tab" aria-selected="false" data-detail-tab="exam">408 易错点</button>
+      </div>
+
+      <div class="nj-detail-content" data-detail-content aria-live="polite">
+        <ol>
+          <li>客户端广播 DHCP Discover。</li>
+          <li>服务器依次完成 Offer、Request 与 ACK。</li>
+          <li>主机获得后续通信必需的四项网络参数。</li>
+        </ol>
+      </div>
+
+      <div class="nj-question-card" data-question-card>
+        <div class="nj-question-heading">
+          <span>固定追问</span>
+          <button type="button" data-reveal-answer aria-expanded="false" aria-controls="nj-current-answer">揭晓答案</button>
+        </div>
+        <p data-question>为什么主机还没有 IP 地址，也能发出 DHCP Discover？</p>
+        <div class="nj-answer" id="nj-current-answer" data-answer hidden>
+          DHCP 规定客户端可以暂用 0.0.0.0 作为源 IP，并通过广播寻找服务器，因此不要求预先拥有可正常单播的地址。
+        </div>
+      </div>
+
+      <div class="nj-note-link">
+        <span>KNOWLEDGE STOP</span>
+        <strong data-note-title>DHCP 与网络接入</strong>
+        <p data-note-copy>正式笔记入口将在对应内容整理并发布到网站后接入。</p>
+      </div>
+    </aside>
+  </main>
+
+  <section class="nj-branches" aria-labelledby="nj-branches-title">
+    <div class="nj-branches-heading">
+      <div>
+        <p>KNOWLEDGE BRANCHES</p>
+        <h2 id="nj-branches-title">从主线伸出的专题</h2>
+      </div>
+      <p>这些内容不强行塞进一次网页访问。展开后先看它接在哪个停靠点，再进入专题复习。</p>
+    </div>
+
+    <div class="nj-branch-grid">
+      <details class="nj-branch-card">
+        <summary>
+          <span>01 · 物理层计算</span>
+          <strong>信道极限与编码</strong>
+          <small>接入 STEP 08</small>
+        </summary>
+        <div>
+          <p>围绕比特如何变成信号继续展开，不打断主流程中的逐跳传输。</p>
+          <ul>
+            <li>奈氏准则与码元种类</li>
+            <li>香农定理与信噪比</li>
+            <li>编码、调制与信道复用</li>
+          </ul>
+          <button type="button" data-jump-stage="7">回到“发送比特”</button>
+        </div>
+      </details>
+
+      <details class="nj-branch-card">
+        <summary>
+          <span>02 · 链路可靠性</span>
+          <strong>CRC、GBN 与 SR</strong>
+          <small>接入 STEP 07 / 09</small>
+        </summary>
+        <div>
+          <p>主线只展示 FCS 检错，可靠传输算法单独作为链路层专题比较。</p>
+          <ul>
+            <li>停止等待与超时重传</li>
+            <li>GBN、SR 的窗口约束</li>
+            <li>CRC 检错与海明码纠错</li>
+          </ul>
+          <button type="button" data-jump-stage="6">回到“ARP 与封帧”</button>
+        </div>
+      </details>
+
+      <details class="nj-branch-card">
+        <summary>
+          <span>03 · 局域网扩展</span>
+          <strong>WLAN、VLAN 与介质访问</strong>
+          <small>接入 STEP 09</small>
+        </summary>
+        <div>
+          <p>从交换机与当前链路继续比较共享介质、无线接入和广播域划分。</p>
+          <ul>
+            <li>CSMA/CD 与二进制指数退避</li>
+            <li>CSMA/CA、DIFS、RTS/CTS</li>
+            <li>VLAN、Access 与 Trunk</li>
+          </ul>
+          <button type="button" data-jump-stage="8">回到“交换机转发”</button>
+        </div>
+      </details>
+
+      <details class="nj-branch-card">
+        <summary>
+          <span>04 · 路由控制平面</span>
+          <strong>RIP、OSPF 与 BGP</strong>
+          <small>接入 STEP 10</small>
+        </summary>
+        <div>
+          <p>主流程使用的是已经生成的转发表；路由协议负责它如何被计算和更新。</p>
+          <ul>
+            <li>距离向量与链路状态</li>
+            <li>自治系统内与自治系统间路由</li>
+            <li>路由表、转发表与最长前缀匹配</li>
+          </ul>
+          <button type="button" data-jump-stage="9">回到“路由器逐跳”</button>
+        </div>
+      </details>
+
+      <details class="nj-branch-card">
+        <summary>
+          <span>05 · TCP 强化</span>
+          <strong>窗口、重传与拥塞控制</strong>
+          <small>接入 STEP 04</small>
+        </summary>
+        <div>
+          <p>握手只是 TCP 的入口，后续专题集中处理序号、可靠传输和动态窗口。</p>
+          <ul>
+            <li>确认号、超时与快速重传</li>
+            <li>接收窗口与流量控制</li>
+            <li>慢开始、拥塞避免与快恢复</li>
+          </ul>
+          <button type="button" data-jump-stage="3">回到“TCP 握手”</button>
+        </div>
+      </details>
+
+      <details class="nj-branch-card">
+        <summary>
+          <span>06 · 其他网络应用</span>
+          <strong>FTP、邮件与 P2P</strong>
+          <small>对照 STEP 05 / 12</small>
+        </summary>
+        <div>
+          <p>用 HTTP 主线建立分层直觉后，再比较其他应用的连接方式与报文组织。</p>
+          <ul>
+            <li>FTP 控制连接与数据连接</li>
+            <li>SMTP、POP3、IMAP 与 MIME</li>
+            <li>C/S 与 P2P 应用模型</li>
+          </ul>
+          <button type="button" data-jump-stage="4">回到“HTTP 请求”</button>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <footer class="nj-controls" aria-label="流程播放控制">
+    <button type="button" data-control="prev"><span aria-hidden="true">←</span> 上一步</button>
+    <button type="button" class="nj-play" data-control="play" aria-pressed="false">
+      <span data-play-icon aria-hidden="true">▶</span>
+      <span data-play-label>自动播放</span>
+    </button>
+    <button type="button" data-control="next">下一步 <span aria-hidden="true">→</span></button>
+    <button type="button" class="nj-replay" data-control="replay">重新开始</button>
+    <p>键盘：← / → 切换，空格播放或暂停</p>
+  </footer>
+
+  <noscript>
+    <p class="nj-noscript">此专题页需要启用 JavaScript 才能切换流程步骤与查看分层详情。</p>
+  </noscript>
+</div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      易钦的个人知识地图 · 持续生长，不求完整
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/network-journey.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -568,6 +568,21 @@ a:hover {
   border-bottom: 1px solid var(--km-line);
 }
 
+.km-interactive-project {
+  border-top: 1px solid var(--km-green);
+  border-bottom-color: var(--km-green);
+  background: rgba(219, 231, 124, 0.16);
+}
+
+.km-interactive-project > a {
+  padding-left: 10px;
+}
+
+.km-interactive-project > a > p {
+  color: var(--km-green-dark);
+  font-weight: 700;
+}
+
 .km-compact-entry > a {
   position: relative;
   display: block;
@@ -964,6 +979,7 @@ footer {
     flex-direction: column;
     gap: 10px;
   }
+
 }
 
 @media (prefers-reduced-motion: reduce) {
