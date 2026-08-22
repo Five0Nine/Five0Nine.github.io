@@ -636,31 +636,32 @@
         </div>
 
         <div class="nj-envelope" data-envelope aria-live="polite">
-          <article class="nj-envelope-field is-active" data-envelope-layer="application">
-            <span>应用层</span>
-            <strong>DHCP Discover</strong>
-            <code>请求网络参数</code>
-          </article>
-          <article class="nj-envelope-field" data-envelope-layer="transport">
-            <span>传输层</span>
-            <strong>UDP</strong>
-            <code>68 → 67</code>
-          </article>
-          <article class="nj-envelope-field" data-envelope-layer="network">
-            <span>网络层</span>
-            <strong>IPv4</strong>
-            <code>0.0.0.0 → 255.255.255.255</code>
-          </article>
-          <article class="nj-envelope-field" data-envelope-layer="link">
-            <span>链路层</span>
-            <strong>Ethernet</strong>
-            <code>目的 MAC：FF:FF:FF:FF:FF:FF</code>
-          </article>
-          <article class="nj-envelope-field" data-envelope-layer="physical">
-            <span>物理层</span>
-            <strong>Bits</strong>
-            <code>编码后通过介质发送</code>
-          </article>
+          <div class="nj-pdu-heading">
+            <span>当前形态</span>
+            <strong>链路上的比特流</strong>
+            <small>从左到右：首部 → 有效载荷 → 帧尾</small>
+          </div>
+          <div class="nj-bitstream-rail">
+            <span>物理编码</span>
+            <code>01101001 11000110 00110101 10110010 ···</code>
+            <strong>整帧转换为连续比特 / 信号</strong>
+          </div>
+          <div class="nj-pdu-scroll" tabindex="0" aria-label="当前报文结构，可横向滚动">
+            <div class="nj-pdu-strip is-physical">
+              <div class="nj-pdu-segment nj-pdu-segment--mac is-added"><span>MAC 首部</span><strong>目的 MAC FF:FF:FF:FF:FF:FF</strong></div>
+              <b class="nj-pdu-divider" aria-hidden="true">|</b>
+              <div class="nj-pdu-segment nj-pdu-segment--ip is-added"><span>IP 首部</span><strong>0.0.0.0 → 255.255.255.255</strong></div>
+              <b class="nj-pdu-divider" aria-hidden="true">|</b>
+              <div class="nj-pdu-segment nj-pdu-segment--transport is-added"><span>UDP 首部</span><strong>源端口 68 → 目的端口 67</strong></div>
+              <b class="nj-pdu-divider" aria-hidden="true">|</b>
+              <div class="nj-pdu-segment nj-pdu-segment--payload is-active"><span>应用数据</span><strong>DHCP Discover · 请求 IP、掩码、网关与 DNS</strong></div>
+              <b class="nj-pdu-divider" aria-hidden="true">|</b>
+              <div class="nj-pdu-segment nj-pdu-segment--fcs is-added"><span>FCS</span><strong>帧校验序列</strong></div>
+            </div>
+          </div>
+          <details class="nj-pdu-details">
+            <summary>查看各层字段与状态</summary>
+          </details>
         </div>
 
         <div class="nj-field-change">
@@ -701,7 +702,7 @@
       <div class="nj-detail-tabs" role="tablist" aria-label="步骤详情">
         <button type="button" role="tab" aria-selected="true" data-detail-tab="event" class="is-active">发生了什么</button>
         <button type="button" role="tab" aria-selected="false" data-detail-tab="packet">报文变化</button>
-        <button type="button" role="tab" aria-selected="false" data-detail-tab="exam">408 易错点</button>
+        <button type="button" role="tab" aria-selected="false" data-detail-tab="exam">真题考向</button>
       </div>
 
       <div class="nj-detail-content" data-detail-content aria-live="polite">

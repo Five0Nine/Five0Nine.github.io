@@ -30,9 +30,9 @@
         'DHCP 是应用层协议，但报文仍要经过 UDP、IP 和链路层封装。'
       ],
       exam: [
-        '“主机没有 IP 就完全不能发送 IP 分组”是错误说法，DHCP 为这个启动场景规定了特殊地址。',
-        'DORA 四步要与租期更新过程区分，主流程不在这里展开续租。',
-        'DHCP 分配的不只是 IP 地址，还常包括掩码、默认网关与 DNS 地址。'
+        '<strong>【2015-47】地址获取：</strong>根据子网范围确定 DHCP 可分配地址池，并判断 Discover 的源 IP 与广播目的 IP。',
+        '<strong>【2022-47】广播传播：</strong>判断首个 DHCP 报文类型、路由器接口能否收到该广播，以及交换机转发帧的目的 MAC。',
+        '<strong>综合考法：</strong>把 DORA 顺序与“IP 广播 + MAC 广播 + 同一广播域”放在同一条链路上判断。'
       ],
       question: '为什么主机还没有 IP 地址，也能发出 DHCP Discover？',
       answer: 'DHCP 规定客户端可以暂用 0.0.0.0 作为源 IP，并通过 IP 和 MAC 广播寻找服务器，因此不要求预先拥有能够正常单播的地址。',
@@ -63,9 +63,9 @@
         '资源路径会进入后续 HTTP 请求，域名则先交给 DNS 解析。'
       ],
       exam: [
-        '不要把“输入 URL”直接等同于“立刻发送 HTTP 请求”。',
-        '若没有服务器 IP，通常要先完成 DNS；若没有连接，还要先建立 TCP。',
-        '默认端口只是在 URL 未显式指定端口时采用。'
+        '<strong>【2020-40】访问时序：</strong>从点击超链接开始，按缓存条件拆出 DNS、TCP 建连和 HTTP 请求所占 RTT。',
+        '<strong>【2015-40】请求语义：</strong>从请求行、Host、Connection 与 Cookie 判断资源路径、目标主机和连接方式。',
+        '<strong>【2014-40、2021-47】协议链：</strong>判断一次 Web 访问实际会调用哪些协议，并写出 HTTP 之前必须完成的步骤。'
       ],
       question: '输入 URL 后，为什么通常不能马上发送 HTTP 请求？',
       answer: '浏览器通常还需要先得到服务器 IP；若没有可复用连接，还要完成 TCP 握手。只有名字解析和进程间连接准备完成，HTTP 请求才有明确的目的地和承载方式。',
@@ -96,9 +96,9 @@
         'DNS 返回的是服务器 IP，不会返回服务器跨网络可直接使用的 MAC。'
       ],
       exam: [
-        '递归查询与迭代查询要看“被询问服务器是否代替请求者继续查询”。',
-        'DNS 缓存的 TTL 与 IP 分组首部的 TTL 不是同一个概念。',
-        'DNS 不在五层模型之外，它也要完整经过下层协议栈。'
+        '<strong>【2010-40】递归查询：</strong>分别统计用户主机和本地域名服务器发出的 DNS 请求条数。',
+        '<strong>【2016-40】迭代查询：</strong>结合缓存与域名层次，求本地域名服务器查询次数的最小值和最大值。',
+        '<strong>【2020-40、2021-47】综合访问：</strong>把 DNS 查询 RTT、UDP/IP/以太网封装和后续 HTTP 访问连起来计算。'
       ],
       question: 'DNS 服务器位于其他网络时，主机应该解析谁的 MAC 地址？',
       answer: '解析默认网关的 MAC。DNS 服务器是最终 IP 目的地，但当前以太网帧只需要送到本地链路的下一跳。',
@@ -129,9 +129,9 @@
         '四元组共同区分一条 TCP 连接，而不仅是“一个端口”。'
       ],
       exam: [
-        '第三次握手<strong>可以</strong>携带应用数据，但不能说成一定携带 HTTP 请求。',
-        '确认号表示下一次期望收到的序号，不是已经收到的最后一个序号。',
-        '三次握手与四次挥手解决的问题不同，不能只按报文数量死记。'
+        '<strong>【2011-39】第二次握手：</strong>根据客户端 SYN 的序号填写服务端 SYN、ACK、seq 和 ack。',
+        '<strong>【2019-39】第三次握手：</strong>由双方初始序号计算客户端最终 ACK 段的确认序号。',
+        '<strong>【2012-47、2016-41】报文识别：</strong>从首部或抓包记录辨认三次握手分组，并结合端口、标志位和序号验证连接状态。'
       ],
       question: '为什么 TCP 仅靠两次握手不能可靠地建立双向连接？',
       answer: '两次交互只能让一方确认自己的发送和对方的接收能力；第三次确认让服务器知道客户端已经收到它的 SYN 与初始序号，也能避免旧连接请求造成误建立。',
@@ -162,9 +162,9 @@
         '若请求较大，TCP 可以把字节流划分到多个报文段中。'
       ],
       exam: [
-        'HTTP 无状态不等于 TCP 无连接，两个协议所处层次与职责不同。',
-        '持续连接、非持续连接会影响建立 TCP 连接的次数和 RTT 计算。',
-        'HTTP/1.1 + TCP 是本页主线；HTTPS、HTTP/3 暂不混入第一版。'
+        '<strong>【2015-40】请求报文：</strong>解释 GET 路径、Host、Connection 和 Cookie，并判断是否使用持续连接。',
+        '<strong>【2011-47】跨层读帧：</strong>从以太网帧十六进制内容中定位 HTTP 请求、服务器 IP、TCP 端口和网关 MAC。',
+        '<strong>【2021-47】访问前置过程：</strong>列出 HTTP 发出前运行的应用层协议及其逐层封装，并关联交换机学习结果。'
       ],
       question: 'HTTP 请求中的 Host、目的 IP 和目的 MAC 分别解决什么问题？',
       answer: 'Host 标识应用层要访问的虚拟主机，目的 IP 标识最终服务器，目的 MAC 标识当前链路的下一跳。三者处于不同层次，不能互相替代。',
@@ -195,9 +195,9 @@
         '协议字段表明 IP 分组携带的是 TCP，便于接收端向上分用。'
       ],
       exam: [
-        '“目的 IP 在外网”时，IP 目的地址仍写最终服务器，不能改写成默认网关。',
-        '下一跳与最终目的主机是两个概念。',
-        '超过 MTU 时是否分片要结合 IPv4/IPv6、DF 标志和题目条件判断。'
+        '<strong>【2022-35、2023-39】子网判断：</strong>由前缀或掩码求网络地址、主机范围与默认网关，判断目的主机是否同网段。',
+        '<strong>【2016-38、2020-47】端到端地址：</strong>跟踪 HTTP 分组经过路由器和 NAT 前后的源、目的 IP，区分最终目的与下一跳。',
+        '<strong>【2021-36、2018-47】IPv4 分片：</strong>结合 MTU、首部长度、8字节对齐计算分片总长度、片偏移和 MF。'
       ],
       question: '目的主机不在本地子网时，IP 目的地址为什么仍然写最终服务器？',
       answer: 'IP 首部描述端到端的最终目标；默认网关只是当前下一跳，它由链路层目的 MAC 和本机转发表体现。普通路由器不会把最终目的 IP 改成自己。',
@@ -228,9 +228,9 @@
         'MAC 解决当前一跳，IP 解决端到端目标。'
       ],
       exam: [
-        'ARP 查询的是<strong>下一跳 IP 对应的 MAC</strong>，不一定是最终服务器 MAC。',
-        'ARP 广播只能在当前广播域中传播，路由器通常不会转发。',
-        'FCS 负责检测当前帧传输差错，不等于 TCP 的端到端可靠传输。'
+        '<strong>【2012-38】协议功能：</strong>明确 ARP 完成“下一跳 IP 地址 → MAC 地址”的映射。',
+        '<strong>【2015-47】首次出帧：</strong>ARP 表为空时判断第一个广播帧，以及发往 Internet 的数据帧应填写哪个目的 MAC。',
+        '<strong>【2018-37、2024-35】逐跳与边界：</strong>比较路由器两侧帧的源/目的 MAC，并结合 VLAN 判断 ARP 表可能出现的项目。'
       ],
       question: '为什么帧的目的 MAC 是网关，而 IP 分组的目的 IP 是 Web 服务器？',
       answer: 'MAC 地址只负责当前局域网的一跳交付，IP 地址负责跨越多段链路找到最终主机。每到一个路由器，旧帧被拆除并换上下一段链路的新 MAC 首部。',
@@ -261,9 +261,9 @@
         '信道带宽、噪声和码元种类会限制最大数据率。'
       ],
       exam: [
-        '奈氏准则用于理想低通信道，香农定理考虑噪声与信噪比。',
-        '信息传输速率与码元传输速率不能直接混为同一个量。',
-        'CSMA/CD 与 CSMA/CA 属于介质访问控制，不要仅因出现“信号”就归到物理层。'
+        '<strong>【2009-34、2016-34、2022-34】信道容量：</strong>根据带宽、信号状态数或信噪比选择奈奎斯特公式或香农公式。',
+        '<strong>【2011-34、2013-34、2021-34】编码波形：</strong>在比特率、波特率、曼彻斯特和差分曼彻斯特波形之间转换。',
+        '<strong>【2023-34、2024-34】调制方式：</strong>由最大数据率反推 QAM 阶数，或根据载波特征辨认 ASK、PSK、FSK。'
       ],
       question: '奈氏准则和香农定理分别限制信道的哪一方面？',
       answer: '奈氏准则讨论理想低通信道中带宽和码元种类对最高码元或数据率的限制；香农定理进一步考虑噪声，用带宽和信噪比给出信道容量上限。',
@@ -294,9 +294,9 @@
         '广播域是否被分隔要看 VLAN 或三层设备，而不是仅看交换机数量。'
       ],
       exam: [
-        'MAC 表根据<strong>源 MAC</strong>学习，根据目的 MAC 查询转发。',
-        '未知单播与广播都会泛洪，但概念不能混写。',
-        '交换机隔离冲突域；普通二层交换机默认不隔离广播域。'
+        '<strong>【2009-36】转发依据：</strong>判断交换机进行转发决策时使用的是目的物理地址，而不是 IP 地址。',
+        '<strong>【2014-34、2021-47】自学习与泛洪：</strong>根据当前 MAC 表确定输出端口，并反推通信后形成的交换表内容。',
+        '<strong>【2015-37、2020-35、2022-47】设备边界：</strong>区分交换机、集线器和路由器对冲突域、广播域及帧可见范围的影响。'
       ],
       question: '交换机为什么根据源 MAC 学习，却根据目的 MAC 转发？',
       answer: '收到帧的端口直接证明了源 MAC 位于哪里，因此可以据此学习；要决定帧从哪个端口离开，则必须查询目的 MAC 的位置。',
@@ -327,9 +327,9 @@
         '若经过 NAT，IP 和端口也可能被修改并记录映射。'
       ],
       exam: [
-        '最长前缀匹配选择的是匹配位数最多的表项，不是数值最大或路由最短。',
-        '路由表/转发表中的下一跳可能仍需 ARP 转换为当前链路的 MAC。',
-        '路由器不会为每个转发分组重新执行 TCP 或 HTTP。'
+        '<strong>【2015-38】最长前缀匹配：</strong>让目的 IP 同时匹配多条表项，选择前缀最长者对应的输出接口。',
+        '<strong>【2012-37、2018-37】逐跳转发：</strong>由下一跳和接口确定新帧 MAC，说明 IP 通常不变而链路层首部每跳重写。',
+        '<strong>【2013-47、2014-43、2024-47】路由形成：</strong>考路由聚合、OSPF/RIP/BGP、TTL 变化及控制平面信息如何生成转发表。'
       ],
       question: '经过普通路由器时，哪些字段会改变，哪些通常保持不变？',
       answer: '源、目的 MAC 每跳改变，TTL 减一，IPv4 首部校验和随之重算；源、目的 IP 与 TCP 端口通常保持不变。NAT 是会修改 IP 或端口的重要例外。',
@@ -360,9 +360,9 @@
         '中间路由器只处理下三层；服务器实现完整协议栈。'
       ],
       exam: [
-        '服务器重组 TCP 字节流，与 IPv4 分片重组是两个不同层次的问题。',
-        'FCS 正确不能推出数据一定完整到达应用，端到端可靠性仍由 TCP 负责。',
-        '端口标识进程，IP 标识主机或接口，MAC 服务当前链路。'
+        '<strong>【2012-47】首部分用：</strong>从 IPv4 协议字段、TCP 目的端口和标志位判断分组应交给哪个传输协议与进程。',
+        '<strong>【2011-47】跨层拆解：</strong>从原始帧依次读出 MAC、IP、TCP 和 HTTP 字段，区分每层首部的作用范围。',
+        '<strong>【2009-38、2011-40】字节流重组：</strong>利用序号、有效载荷长度和累计确认号判断服务器已经连续接收的数据。'
       ],
       question: '接收端如何利用协议号和目的端口把数据交给正确进程？',
       answer: 'IP 首部协议号把数据分用给 TCP，TCP 首部目的端口再把重组后的字节流分用给正在监听该端口的 Web 进程。',
@@ -393,9 +393,9 @@
         '持续连接能够减少重复建立 TCP 连接带来的 RTT。'
       ],
       exam: [
-        '网页显示通常不只对应一个 HTTP 请求，HTML 还可能引用多个外部资源。',
-        '非持续连接、持续连接与流水线的 RTT 计算要分别建模。',
-        '主动关闭的一方进入 TIME-WAIT，作用不能只解释为“等待服务器关闭”。'
+        '<strong>【2022-40】持续连接：</strong>对“HTML + 引用对象”计算 HTTP/1.1 最短 RTT，并判断连接能否复用。',
+        '<strong>【2024-40】非持续连接：</strong>在不支持并行 TCP 时，按页面和多个小对象分别累计建连与请求 RTT。',
+        '<strong>【2022-39、2024-38】连接释放：</strong>结合 RTT、MSL、主动关闭方和 TIME-WAIT 计算两端进入 CLOSED 的最短时间。'
       ],
       question: '为什么收到 HTML 不一定意味着网页所需的网络通信已经全部完成？',
       answer: 'HTML 往往只描述页面结构，还引用 CSS、JavaScript、图片等外部资源。浏览器解析后可能继续发起多个请求，并复用或新建连接。',
@@ -407,6 +407,7 @@
   const packetModels = [
     {
       direction: '接入阶段 · 广播封装',
+      view: 'physical',
       change: '主机使用特殊源地址和广播目的地址完成首次网络配置。',
       fields: [
         ['application', 'active', 'DHCP Discover', '请求 IP、掩码、网关与 DNS'],
@@ -418,6 +419,7 @@
     },
     {
       direction: '主机内部 · 尚未发包',
+      view: 'application',
       change: '浏览器只在本机拆分 URL，其他层尚未增加首部。',
       fields: [
         ['application', 'active', 'URL', 'http://study.example/index.html'],
@@ -429,6 +431,7 @@
     },
     {
       direction: 'DNS 查询 · 完整跨层发送',
+      view: 'physical',
       change: '域名进入 DNS 问题区，下层分别加入端口、IP 与当前一跳 MAC。',
       fields: [
         ['application', 'active', 'DNS Query', 'QNAME=study.example，QTYPE=A'],
@@ -440,6 +443,7 @@
     },
     {
       direction: 'TCP 建连 · 控制报文',
+      view: 'transport',
       change: 'TCP SYN 没有 HTTP 数据，但依然需要 IP、帧与物理层承载。',
       fields: [
         ['application', 'pending', '应用数据', '尚未发送 HTTP 请求'],
@@ -451,6 +455,7 @@
     },
     {
       direction: '发送端 · 逐层封装',
+      view: 'link',
       change: 'HTTP 请求成为 TCP 字节流的一部分，随后继续加入 IP 与链路层首尾部。',
       fields: [
         ['application', 'active', 'HTTP GET', 'GET /index.html，Host: study.example'],
@@ -462,6 +467,7 @@
     },
     {
       direction: '网络层 · 加入端到端地址',
+      view: 'network',
       change: '目的 IP 始终写最终服务器；默认网关只作为下一跳，不会替代它。',
       fields: [
         ['application', 'kept', 'HTTP GET', '应用报文保持不变'],
@@ -473,6 +479,7 @@
     },
     {
       direction: '当前链路 · ARP 后完成封帧',
+      view: 'link',
       change: 'ARP 广播先获得网关 MAC；随后 IP 分组才能装入发往网关的以太网帧。',
       fields: [
         ['application', 'kept', 'HTTP GET', '封装在最内层'],
@@ -484,6 +491,7 @@
     },
     {
       direction: '物理层 · 帧变成信号',
+      view: 'physical',
       change: '上层首部不会消失，完整帧只是被表示为连续比特并映射为物理信号。',
       fields: [
         ['application', 'kept', 'HTTP GET', '仍位于有效载荷内部'],
@@ -495,6 +503,7 @@
     },
     {
       direction: '交换机 · 按帧转发',
+      view: 'link',
       change: '交换机读取源、目的 MAC 并选择端口，通常不修改帧内的 IP 与 TCP 字段。',
       fields: [
         ['application', 'kept', 'HTTP GET', '交换机不读取'],
@@ -506,6 +515,7 @@
     },
     {
       direction: '路由器 · 拆旧帧再重新封帧',
+      view: 'link',
       change: '旧 MAC 首部被替换，TTL 从 64 变为 63；IP 地址和 TCP 端口通常保持。',
       fields: [
         ['application', 'kept', 'HTTP GET', '路由器不处理应用语义'],
@@ -517,6 +527,7 @@
     },
     {
       direction: '接收端 · 逐层解封装',
+      view: 'decapsulate',
       change: '每层先校验并读取自己的控制信息，再把有效载荷向上交付。',
       fields: [
         ['application', 'active', 'HTTP GET', '最终交给监听 80 端口的 Web 进程'],
@@ -528,6 +539,7 @@
     },
     {
       direction: '返回方向 · 地址与端口对调',
+      view: 'link',
       change: '服务器生成 HTTP 200 响应，源/目的端口和 IP 与请求方向相反，再沿路径返回。',
       fields: [
         ['application', 'active', 'HTTP/1.1 200 OK', 'HTML + 后续资源描述'],
@@ -707,17 +719,87 @@
       pending: '尚未加入'
     };
 
-    elements.packetDirection.textContent = model.direction;
-    elements.fieldChange.textContent = model.change;
-    elements.envelope.innerHTML = model.fields.map(function (field) {
+    const fieldMap = model.fields.reduce(function (map, field) {
+      map[field[0]] = field;
+      return map;
+    }, {});
+    const pduNames = {
+      application: '应用报文',
+      transport: fieldMap.transport && fieldMap.transport[2].indexOf('UDP') !== -1 ? 'UDP 用户数据报' : 'TCP 报文段',
+      network: 'IP 分组',
+      link: '以太网帧',
+      physical: '链路上的比特流',
+      decapsulate: '解封后的应用数据'
+    };
+    const viewDepth = {
+      application: 0,
+      transport: 1,
+      network: 2,
+      link: 3,
+      physical: 4,
+      decapsulate: 0
+    };
+    const depth = viewDepth[model.view];
+    const segments = [];
+
+    function isVisible(field, requiredDepth) {
+      return field && depth >= requiredDepth && field[1] !== 'pending' && field[1] !== 'removed';
+    }
+
+    function addSegment(kind, label, value, status) {
+      segments.push(
+        '<div class="nj-pdu-segment nj-pdu-segment--' + kind + ' is-' + status + '">' +
+          '<span>' + label + '</span>' +
+          '<strong>' + value + '</strong>' +
+        '</div>'
+      );
+    }
+
+    if (isVisible(fieldMap.link, 3)) {
+      addSegment('mac', fieldMap.link[2].indexOf('New') === 0 ? '新 MAC 首部' : 'MAC 首部', fieldMap.link[3].replace(/ \+ FCS$/, ''), fieldMap.link[1]);
+    }
+    if (isVisible(fieldMap.network, 2)) {
+      addSegment('ip', 'IP 首部', fieldMap.network[3], fieldMap.network[1]);
+    }
+    if (isVisible(fieldMap.transport, 1)) {
+      const transportLabel = fieldMap.transport[2].indexOf('UDP') !== -1 ? 'UDP 首部' : 'TCP 首部';
+      addSegment('transport', transportLabel, fieldMap.transport[3], fieldMap.transport[1]);
+    }
+
+    if (fieldMap.application && fieldMap.application[1] !== 'removed') {
+      const emptyPayload = fieldMap.application[1] === 'pending';
+      addSegment('payload', emptyPayload ? '无应用数据' : '应用数据', emptyPayload ? fieldMap.application[3] : fieldMap.application[2] + ' · ' + fieldMap.application[3], fieldMap.application[1]);
+    }
+
+    if (isVisible(fieldMap.link, 3)) {
+      addSegment('fcs', 'FCS', '帧校验序列', fieldMap.link[1]);
+    }
+
+    const bitstream = model.view === 'physical' ?
+      '<div class="nj-bitstream-rail"><span>物理编码</span><code>01101001 11000110 00110101 10110010 ···</code><strong>整帧转换为连续比特 / 信号</strong></div>' : '';
+    const decapsulation = model.view === 'decapsulate' ?
+      '<div class="nj-unpack-trail" aria-label="解封装顺序"><span>信号恢复</span><i>→</i><span>去帧首尾</span><i>→</i><span>去 IP 首部</span><i>→</i><span>去 TCP 首部</span><i>→</i><strong>交付应用数据</strong></div>' : '';
+    const detailRows = model.fields.map(function (field) {
       const layer = field[0];
       const status = field[1];
-      return '<article class="nj-envelope-field is-' + status + '" data-envelope-layer="' + layer + '">' +
-        '<div><span>' + layerNames[layer] + '</span><em>' + statusNames[status] + '</em></div>' +
+      return '<li class="is-' + status + '">' +
+        '<span>' + layerNames[layer] + '</span>' +
         '<strong>' + field[2] + '</strong>' +
         '<code>' + field[3] + '</code>' +
-        '</article>';
+        '<em>' + statusNames[status] + '</em>' +
+      '</li>';
     }).join('');
+
+    elements.packetDirection.textContent = model.direction;
+    elements.fieldChange.textContent = model.change;
+    elements.envelope.innerHTML =
+      '<div class="nj-pdu-heading"><span>当前形态</span><strong>' + pduNames[model.view] + '</strong><small>从左到右：首部 → 有效载荷 → 帧尾</small></div>' +
+      bitstream +
+      '<div class="nj-pdu-scroll" tabindex="0" aria-label="当前报文结构，可横向滚动">' +
+        '<div class="nj-pdu-strip' + (model.view === 'physical' ? ' is-physical' : '') + '">' + segments.join('<b class="nj-pdu-divider" aria-hidden="true">|</b>') + '</div>' +
+      '</div>' +
+      decapsulation +
+      '<details class="nj-pdu-details"><summary>查看各层字段与状态</summary><ul>' + detailRows + '</ul></details>';
   }
 
   function updateTabButtons() {
