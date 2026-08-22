@@ -468,20 +468,20 @@
 }
 
 .nj-topology {
+  --nj-exam-ink: #24302c;
+  --nj-exam-gray: #66706b;
+  --nj-exam-paper: #fff;
   position: relative;
   display: grid;
   grid-template-columns: repeat(5, minmax(86px, 1fr));
   gap: clamp(10px, 2vw, 26px);
   align-items: center;
-  min-height: 300px;
-  padding: 82px 6px 72px;
+  min-height: 320px;
+  margin: 0;
+  padding: 94px 10px 90px;
   overflow: hidden;
-  border-top: 1px solid var(--nj-line);
-  border-bottom: 1px solid var(--nj-line);
-  background-image:
-    linear-gradient(rgba(31, 101, 79, 0.032) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(31, 101, 79, 0.032) 1px, transparent 1px);
-  background-size: 24px 24px;
+  border: 1.5px solid var(--nj-exam-ink);
+  background: var(--nj-exam-paper);
 }
 
 .nj-path-line {
@@ -489,8 +489,8 @@
   top: 49%;
   right: 8%;
   left: 8%;
-  height: 2px;
-  background: repeating-linear-gradient(90deg, var(--nj-line-strong) 0 8px, transparent 8px 14px);
+  height: 1.5px;
+  background: var(--nj-exam-ink);
 }
 
 .nj-path-progress {
@@ -498,10 +498,8 @@
   top: -1px;
   left: 0;
   width: 2%;
-  height: 4px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--nj-green), var(--nj-lime));
-  box-shadow: 0 0 12px rgba(31, 101, 79, 0.32);
+  height: 3px;
+  background: var(--nj-exam-ink);
   transition: width 720ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -510,12 +508,12 @@
   z-index: 1;
   top: -5px;
   left: 0;
-  width: 11px;
-  height: 11px;
-  border: 2px solid var(--nj-surface);
-  border-radius: 50%;
-  background: var(--nj-lime);
-  box-shadow: 0 0 0 3px rgba(31, 101, 79, 0.18);
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--nj-exam-paper);
+  border-radius: 0;
+  background: var(--nj-exam-ink);
+  box-shadow: 0 0 0 1px var(--nj-exam-ink);
   opacity: 0;
 }
 
@@ -541,7 +539,7 @@
 .nj-topology[data-motion="response"] .nj-path-progress {
   right: 0;
   left: auto;
-  background: linear-gradient(90deg, var(--nj-lime), var(--nj-green));
+  background: var(--nj-exam-ink);
 }
 
 .nj-topology[data-motion="response"] .nj-flow-pulse {
@@ -557,7 +555,7 @@
   height: 0;
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
-  border-left: 8px solid var(--nj-line-strong);
+  border-left: 8px solid var(--nj-exam-ink);
   content: "";
 }
 
@@ -569,18 +567,18 @@
   justify-items: center;
   min-width: 0;
   padding: 14px 8px;
-  border: 1px solid var(--nj-line);
-  border-radius: 6px;
-  background: var(--nj-surface);
+  border: 1px solid var(--nj-exam-ink);
+  border-radius: 0;
+  background: var(--nj-exam-paper);
   text-align: center;
-  transition: border-color 200ms ease, background-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+  transition: border-width 160ms ease, background-color 160ms ease, outline-color 160ms ease;
 }
 
 .nj-device.is-active {
-  border-color: var(--nj-green);
-  background: #fff;
-  box-shadow: 0 0 0 4px rgba(219, 231, 124, 0.45), 0 12px 28px rgba(24, 50, 46, 0.09);
-  transform: translateY(-5px);
+  border-width: 2px;
+  background: repeating-linear-gradient(-45deg, #fff 0 6px, #f1f2ef 6px 8px);
+  outline: 1px solid var(--nj-exam-ink);
+  outline-offset: 3px;
 }
 
 .nj-device-icon {
@@ -590,10 +588,10 @@
   min-width: 42px;
   height: 34px;
   padding: 0 7px;
-  border: 1px solid var(--nj-green);
-  border-radius: 4px;
-  background: var(--nj-paper);
-  color: var(--nj-green-dark);
+  border: 1.5px solid var(--nj-exam-ink);
+  border-radius: 0;
+  background: var(--nj-exam-paper);
+  color: var(--nj-exam-ink);
   font-family: var(--nj-mono);
   font-size: 0.68rem;
   font-weight: 800;
@@ -608,13 +606,13 @@
 }
 
 .nj-device strong {
-  color: var(--nj-ink);
+  color: var(--nj-exam-ink);
   font-size: 0.73rem;
 }
 
 .nj-device small {
   margin-top: 3px;
-  color: var(--nj-muted);
+  color: var(--nj-exam-gray);
   font-size: 0.58rem;
 }
 
@@ -625,15 +623,15 @@
   left: clamp(8%, var(--packet-position), 92%);
   max-width: 120px;
   padding: 6px 10px;
-  border: 1px solid var(--nj-green-dark);
-  border-radius: 999px;
-  background: var(--nj-lime);
-  color: var(--nj-ink);
+  border: 1.5px solid var(--nj-exam-ink);
+  border-radius: 0;
+  background: var(--nj-exam-paper);
+  color: var(--nj-exam-ink);
   font-family: var(--nj-mono);
   font-size: 0.58rem;
   font-weight: 800;
   white-space: nowrap;
-  box-shadow: 0 6px 18px rgba(24, 50, 46, 0.14);
+  box-shadow: 3px 3px 0 rgba(36, 48, 44, 0.14);
   transform: translateX(-50%);
   transition: left 620ms cubic-bezier(0.22, 1, 0.36, 1), top 260ms ease;
 }
@@ -653,21 +651,21 @@
   justify-content: center;
   width: 16px;
   height: 14px;
-  border: 1px solid rgba(24, 50, 46, 0.34);
-  border-radius: 2px;
-  background: var(--nj-surface);
-  color: var(--nj-ink);
+  border: 1px solid var(--nj-exam-ink);
+  border-radius: 0;
+  background: var(--nj-exam-paper);
+  color: var(--nj-exam-ink);
   font-size: 0.42rem;
   font-style: normal;
   line-height: 1;
-  box-shadow: 0 3px 8px rgba(24, 50, 46, 0.08);
+  box-shadow: none;
 }
 
-.nj-packet-stack i[data-stack-layer="application"] { background: #dbe77c; }
-.nj-packet-stack i[data-stack-layer="transport"] { background: #b7ddd3; }
-.nj-packet-stack i[data-stack-layer="network"] { background: #eadb9f; }
-.nj-packet-stack i[data-stack-layer="link"] { background: #bfd1e1; }
-.nj-packet-stack i[data-stack-layer="physical"] { background: #d9d9df; }
+.nj-packet-stack i[data-stack-layer="application"] { background: #fff; }
+.nj-packet-stack i[data-stack-layer="transport"] { background: #eceeeb; }
+.nj-packet-stack i[data-stack-layer="network"] { background: #dfe2de; }
+.nj-packet-stack i[data-stack-layer="link"] { background: #d1d5d0; }
+.nj-packet-stack i[data-stack-layer="physical"] { background: #c3c8c2; }
 
 .nj-topology[data-motion="encapsulate"] .nj-packet-stack i {
   animation: nj-stack-build 1.45s ease both;
@@ -694,7 +692,7 @@
   width: 1px;
   height: 13px;
   content: "";
-  background: var(--nj-green);
+  background: var(--nj-exam-ink);
 }
 
 .nj-side-service {
@@ -704,33 +702,33 @@
   gap: 7px;
   align-items: center;
   padding: 7px 10px;
-  border: 1px solid var(--nj-line);
-  border-radius: 5px;
-  background: var(--nj-surface);
-  color: var(--nj-muted);
+  border: 1px dashed var(--nj-exam-ink);
+  border-radius: 0;
+  background: var(--nj-exam-paper);
+  color: var(--nj-exam-gray);
   font-size: 0.62rem;
   transition: border-color 200ms ease, background-color 200ms ease, opacity 200ms ease;
 }
 
 .nj-side-service > span {
-  color: var(--nj-green);
+  color: var(--nj-exam-ink);
   font-family: var(--nj-mono);
   font-weight: 800;
 }
 
 .nj-side-service.is-active {
-  border-color: var(--nj-green);
-  background: var(--nj-lime-soft);
-  color: var(--nj-ink);
+  border: 2px solid var(--nj-exam-ink);
+  background: repeating-linear-gradient(-45deg, #fff 0 6px, #f1f2ef 6px 8px);
+  color: var(--nj-exam-ink);
 }
 
 .nj-side-dns {
-  top: 22px;
+  top: 46px;
   left: 29%;
 }
 
 .nj-side-dhcp {
-  bottom: 20px;
+  bottom: 48px;
   left: 4%;
 }
 
@@ -740,7 +738,7 @@
   width: 2px;
   content: "";
   opacity: 0;
-  background: repeating-linear-gradient(180deg, var(--nj-green) 0 5px, transparent 5px 9px);
+  background: repeating-linear-gradient(180deg, var(--nj-exam-ink) 0 5px, transparent 5px 9px);
   transform: translateX(-50%);
 }
 
@@ -767,6 +765,225 @@
 
 .nj-topology.is-motion-running .nj-device.is-active {
   animation: nj-device-process 900ms ease both;
+}
+
+.nj-topology-caption {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  gap: 7px;
+  align-items: baseline;
+  justify-content: center;
+  color: var(--nj-exam-ink);
+  font-size: 0.61rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.nj-topology-caption span {
+  font-family: var(--nj-mono);
+  font-weight: 800;
+}
+
+.nj-topology-caption strong {
+  font-weight: 700;
+}
+
+.nj-topology-caption small {
+  color: var(--nj-exam-gray);
+}
+
+/* Branching exam-style topology canvas. The route changes with data-motion. */
+.nj-topology {
+  display: block;
+  min-height: 0;
+  padding: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.nj-topology-canvas {
+  position: relative;
+  width: 100%;
+  min-width: 620px;
+  height: 380px;
+}
+
+.nj-route-map {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.nj-route-edge {
+  fill: none;
+  stroke: #aab0ab;
+  stroke-width: 1.5;
+  marker-end: url(#nj-route-arrow);
+  vector-effect: non-scaling-stroke;
+  transition: stroke 180ms ease, stroke-width 180ms ease, opacity 180ms ease;
+}
+
+.nj-route-branch {
+  stroke-dasharray: 5 5;
+}
+
+.nj-route-label {
+  fill: #79817d;
+  font-family: var(--nj-mono);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+
+.nj-topology[data-motion="broadcast"] :is(.nj-edge-client-switch, .nj-edge-switch-peer, .nj-edge-switch-dhcp),
+.nj-topology[data-motion="dns"] :is(.nj-edge-client-switch, .nj-edge-switch-router, .nj-edge-router-internet, .nj-edge-internet-dns),
+.nj-topology[data-motion="handshake"] .nj-route-edge:not(.nj-route-branch),
+.nj-topology[data-motion="encapsulate"] :is(.nj-edge-client-switch, .nj-edge-switch-router),
+.nj-topology[data-motion="link"] :is(.nj-edge-client-switch, .nj-edge-switch-router, .nj-edge-switch-peer, .nj-edge-switch-dhcp),
+.nj-topology[data-motion="signal"] .nj-edge-client-switch,
+.nj-topology[data-motion="switch"] :is(.nj-edge-client-switch, .nj-edge-switch-router),
+.nj-topology[data-motion="route"] :is(.nj-edge-router-internet, .nj-edge-internet-server),
+.nj-topology[data-motion="decapsulate"] .nj-edge-internet-server,
+.nj-topology[data-motion="response"] .nj-route-edge:not(.nj-route-branch) {
+  stroke: var(--nj-exam-ink);
+  stroke-width: 2.8;
+  stroke-dasharray: 10 5;
+  animation: nj-route-flow 720ms linear infinite;
+}
+
+.nj-topology[data-motion="response"] .nj-route-edge:not(.nj-route-branch) {
+  marker-start: url(#nj-route-arrow);
+  marker-end: none;
+  animation-direction: reverse;
+}
+
+.nj-topology[data-motion="broadcast"] :is(.nj-label-peer, .nj-label-dhcp),
+.nj-topology[data-motion="dns"] .nj-label-dns,
+.nj-topology[data-motion="link"] :is(.nj-label-peer, .nj-label-dhcp),
+.nj-topology[data-motion="route"] .nj-label-other {
+  fill: var(--nj-exam-ink);
+  font-weight: 850;
+}
+
+.nj-path-line {
+  display: none;
+}
+
+.nj-topology .nj-device {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  justify-items: center;
+  width: 15.5%;
+  padding: 12px 6px;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.nj-topology .nj-device.is-active {
+  transform: translate(-50%, -50%);
+}
+
+.nj-device-client { left: 10%; }
+.nj-device-switch { left: 30%; }
+.nj-device-router[data-device="router"] { left: 50%; }
+.nj-device-router[data-device="internet"] { left: 70%; }
+.nj-device-server { left: 90%; }
+
+.nj-topology .nj-side-service {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3px;
+  justify-items: center;
+  width: 16%;
+  margin: 0;
+  padding: 8px 5px;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.nj-side-peer {
+  top: 17%;
+  left: 30%;
+}
+
+.nj-side-dhcp {
+  top: 83%;
+  bottom: auto;
+  left: 30%;
+}
+
+.nj-side-dns {
+  top: 17%;
+  left: 70%;
+}
+
+.nj-side-other {
+  top: 83%;
+  left: 70%;
+}
+
+.nj-side-service::after {
+  display: none;
+}
+
+.nj-topology .nj-packet {
+  top: 40%;
+}
+
+.nj-topology[data-motion="local"] .nj-packet,
+.nj-topology[data-motion="application"] .nj-packet {
+  top: 35%;
+  left: 10%;
+}
+
+.nj-topology[data-motion="broadcast"] .nj-packet {
+  top: 70%;
+  left: 30%;
+}
+
+.nj-topology[data-motion="dns"] .nj-packet {
+  top: 32%;
+  left: 70%;
+}
+
+.nj-topology[data-motion="handshake"] .nj-packet,
+.nj-topology[data-motion="response"] .nj-packet {
+  left: 50%;
+}
+
+.nj-topology[data-motion="encapsulate"] .nj-packet {
+  top: 35%;
+  left: 10%;
+}
+
+.nj-topology[data-motion="link"] .nj-packet,
+.nj-topology[data-motion="signal"] .nj-packet,
+.nj-topology[data-motion="switch"] .nj-packet {
+  left: 30%;
+}
+
+.nj-topology[data-motion="route"] .nj-packet {
+  left: 70%;
+}
+
+.nj-topology[data-motion="decapsulate"] .nj-packet {
+  left: 90%;
+}
+
+@keyframes nj-route-flow {
+  to { stroke-dashoffset: -15; }
 }
 
 .nj-packet-lens {
@@ -1364,8 +1581,8 @@
 }
 
 @keyframes nj-packet-pulse {
-  0%, 100% { box-shadow: 0 6px 18px rgba(24, 50, 46, 0.14); }
-  50% { box-shadow: 0 6px 18px rgba(24, 50, 46, 0.14), 0 0 0 8px rgba(219, 231, 124, 0.28); }
+  0%, 100% { box-shadow: 3px 3px 0 rgba(36, 48, 44, 0.14); }
+  50% { box-shadow: 3px 3px 0 rgba(36, 48, 44, 0.28), 0 0 0 2px rgba(36, 48, 44, 0.18); }
 }
 
 @keyframes nj-flow-forward {
@@ -1386,8 +1603,8 @@
   0% { left: 0; opacity: 0; }
   10% { opacity: 1; }
   45% { left: calc(100% - 11px); opacity: 1; }
-  55% { left: calc(100% - 11px); opacity: 1; background: #e7b38f; }
-  90% { left: 0; opacity: 1; background: #e7b38f; }
+  55% { left: calc(100% - 11px); opacity: 1; background: #a8aea9; }
+  90% { left: 0; opacity: 1; background: #a8aea9; }
   100% { left: 0; opacity: 0; }
 }
 
@@ -1408,14 +1625,13 @@
 }
 
 @keyframes nj-service-process {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(31, 101, 79, 0.06); }
-  50% { box-shadow: 0 0 0 8px rgba(219, 231, 124, 0.34); }
+  0%, 100% { outline: 1px solid rgba(36, 48, 44, 0); outline-offset: 1px; }
+  50% { outline: 1px solid rgba(36, 48, 44, 0.7); outline-offset: 4px; }
 }
 
 @keyframes nj-device-process {
-  0% { filter: saturate(0.5); transform: translateY(0) scale(0.96); }
-  55% { filter: saturate(1.2); transform: translateY(-7px) scale(1.03); }
-  100% { filter: none; transform: translateY(-5px) scale(1); }
+  0%, 100% { outline-offset: 3px; }
+  50% { outline-offset: 6px; }
 }
 
 @media (max-width: 1240px) {
@@ -1483,10 +1699,8 @@
   }
 
   .nj-topology {
-    grid-template-columns: 1fr;
-    gap: 9px;
     min-width: 0;
-    padding: 58px 12px 14px;
+    padding: 0;
   }
 
   .nj-scene {
@@ -1518,36 +1732,13 @@
     display: none;
   }
 
-  .nj-packet {
-    top: 14px;
-    left: 12px !important;
-    transform: none;
+  .nj-topology-caption {
+    display: block;
   }
 
-  .nj-packet::after {
-    display: none;
-  }
-
-  .nj-device {
-    grid-template-columns: 48px minmax(0, 1fr);
-    gap: 10px;
-    justify-items: start;
-    padding: 9px 12px;
-    text-align: left;
-  }
-
-  .nj-device.is-active {
-    transform: translateX(5px);
-  }
-
-  .nj-device strong,
-  .nj-device small {
-    white-space: normal;
-  }
-
-  .nj-side-service {
-    position: static;
-    margin-left: 50px;
+  .nj-topology-caption small {
+    display: block;
+    margin-top: 2px;
   }
 
   .nj-branches-heading {

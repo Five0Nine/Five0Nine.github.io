@@ -515,7 +515,32 @@
 
       <p class="nj-stage-summary" data-stage-summary>浏览器访问网页以前，主机必须已有 IP、子网掩码、默认网关和 DNS 地址；只有刚接入或租约失效时才需要运行 DHCP。</p>
 
-      <div class="nj-topology" data-topology>
+      <figure class="nj-topology" data-topology aria-labelledby="nj-topology-caption">
+        <div class="nj-topology-canvas">
+          <svg class="nj-route-map" viewBox="0 0 1000 400" preserveAspectRatio="none" role="img" aria-label="主机经交换机和路由器访问服务器，并分支连接同网段主机、DHCP、DNS 和其他网络">
+            <defs>
+              <marker id="nj-route-arrow" markerWidth="5" markerHeight="5" refX="4.5" refY="2.5" orient="auto-start-reverse" markerUnits="strokeWidth">
+                <path d="M0,0 L5,2.5 L0,5 Z" fill="context-stroke"></path>
+              </marker>
+            </defs>
+            <path class="nj-route-edge nj-edge-client-switch" d="M170 200 H230"></path>
+            <path class="nj-route-edge nj-edge-switch-router" d="M370 200 H430"></path>
+            <path class="nj-route-edge nj-edge-router-internet" d="M570 200 H630"></path>
+            <path class="nj-route-edge nj-edge-internet-server" d="M770 200 H830"></path>
+            <path class="nj-route-edge nj-route-branch nj-edge-switch-peer" d="M300 160 V94"></path>
+            <path class="nj-route-edge nj-route-branch nj-edge-switch-dhcp" d="M300 240 V306"></path>
+            <path class="nj-route-edge nj-route-branch nj-edge-internet-dns" d="M700 160 V94"></path>
+            <path class="nj-route-edge nj-route-branch nj-edge-internet-other" d="M700 240 V306"></path>
+            <text class="nj-route-label" x="200" y="184" text-anchor="middle">局域网链路</text>
+            <text class="nj-route-label" x="400" y="184" text-anchor="middle">网关链路</text>
+            <text class="nj-route-label" x="600" y="184" text-anchor="middle">广域网</text>
+            <text class="nj-route-label" x="800" y="184" text-anchor="middle">服务器网</text>
+            <text class="nj-route-label nj-label-peer" x="314" y="122">广播 / 泛洪支路</text>
+            <text class="nj-route-label nj-label-dhcp" x="314" y="290">DHCP 接入支路</text>
+            <text class="nj-route-label nj-label-dns" x="714" y="122">DNS 查询支路</text>
+            <text class="nj-route-label nj-label-other" x="714" y="290">未选网络出口</text>
+          </svg>
+
         <div class="nj-path-line" aria-hidden="true">
           <span class="nj-path-progress" data-path-progress></span>
           <i class="nj-flow-pulse nj-flow-pulse-one"></i>
@@ -578,11 +603,28 @@
           <strong>域名服务器</strong>
         </article>
 
+        <article class="nj-side-service nj-side-peer" data-device="peer">
+          <span>H2</span>
+          <strong>同网段主机</strong>
+        </article>
+
         <article class="nj-side-service nj-side-dhcp is-active" data-device="dhcp">
           <span>DHCP</span>
           <strong>配置服务器</strong>
         </article>
-      </div>
+
+        <article class="nj-side-service nj-side-other" data-device="other">
+          <span>NET-B</span>
+          <strong>其他网络</strong>
+        </article>
+
+        <figcaption class="nj-topology-caption" id="nj-topology-caption">
+          <span>图 1</span>
+          <strong>一次 Web 请求的端到端传输路径（示意）</strong>
+          <small>粗框和粗线表示本步实际结点与路径，浅色支路表示未选方向</small>
+        </figcaption>
+        </div>
+      </figure>
 
       <section class="nj-packet-lens" aria-labelledby="nj-packet-lens-title">
         <div class="nj-packet-lens-heading">

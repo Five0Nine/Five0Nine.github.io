@@ -15,7 +15,7 @@
       position: '2%',
       path: '12%',
       motion: 'broadcast',
-      devices: ['client', 'dhcp'],
+      devices: ['client', 'switch', 'dhcp', 'peer'],
       summary: '浏览器访问网页以前，主机必须已有 IP、子网掩码、默认网关和 DNS 地址；只有刚接入或租约失效时才需要运行 DHCP。',
       state: ['DHCP 应用报文', 'IP 广播 + MAC 广播', '用户主机、DHCP 服务器', '超时后重新尝试 DHCP'],
       event: [
@@ -82,7 +82,7 @@
       position: '25%',
       path: '28%',
       motion: 'dns',
-      devices: ['client', 'dns', 'router'],
+      devices: ['client', 'switch', 'router', 'internet', 'dns'],
       summary: '浏览器依次检查缓存，未命中时向本地域名服务器查询，最终获得 Web 服务器的 IP 地址。',
       state: ['DNS 查询与响应', '域名 → DNS 服务器 IP', '主机、网关、DNS 服务器', '超时重试或改用其他 DNS'],
       event: [
@@ -115,7 +115,7 @@
       position: '34%',
       path: '92%',
       motion: 'handshake',
-      devices: ['client', 'server'],
+      devices: ['client', 'switch', 'router', 'internet', 'server'],
       summary: 'IP 找到服务器主机，端口找到其中的 Web 进程；TCP 通过三次握手同步序号并建立连接。',
       state: ['TCP 控制报文段', '源/目的端口 + 源/目的 IP', '两端主机的 TCP', 'TCP 计时器、重传与状态机'],
       event: [
@@ -214,7 +214,7 @@
       position: '18%',
       path: '20%',
       motion: 'link',
-      devices: ['client', 'router'],
+      devices: ['client', 'switch', 'router', 'peer', 'dhcp'],
       summary: '主机已经知道下一跳 IP，但在当前局域网发送帧还需要对应的 MAC 地址，因此先查询 ARP 缓存或广播请求。',
       state: ['以太网帧', '本机 MAC → 默认网关 MAC', '主机网卡、默认网关接口', 'FCS 检错；错误帧被丢弃'],
       event: [
@@ -280,7 +280,7 @@
       position: '38%',
       path: '44%',
       motion: 'switch',
-      devices: ['switch'],
+      devices: ['switch', 'router'],
       summary: '交换机学习源 MAC 所在端口，再查询目的 MAC；已知时定向转发，未知时在相关端口泛洪。',
       state: ['以太网帧', '源 MAC、目的 MAC', '二层交换机', 'FCS 检错；上层处理丢失'],
       event: [
@@ -313,7 +313,7 @@
       position: '66%',
       path: '84%',
       motion: 'route',
-      devices: ['router', 'internet'],
+      devices: ['router', 'internet', 'server'],
       summary: '每个路由器只决定下一跳：去掉旧链路的帧，检查 IP 与 TTL，最长前缀匹配，然后封装新的链路层帧。',
       state: ['IP 分组 + 每跳新帧', 'IP 通常不变；MAC 每跳改变', '沿途路由器', 'TTL 到零时发送 ICMP 超时'],
       event: [
@@ -379,7 +379,7 @@
       position: '52%',
       path: '100%',
       motion: 'response',
-      devices: ['client', 'server'],
+      devices: ['client', 'switch', 'router', 'internet', 'server'],
       summary: '服务器生成 HTTP 响应并沿相反方向返回；浏览器解析 HTML，继续请求 CSS、脚本和图片，最后复用或释放连接。',
       state: ['HTTP 响应与后续资源请求', '服务器端口 → 客户端临时端口', 'Web 服务器、浏览器', 'TCP 确认、重传与连接释放'],
       event: [
