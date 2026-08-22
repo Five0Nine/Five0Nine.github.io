@@ -226,7 +226,9 @@
 .nj-phase-track {
   display: grid;
   grid-template-columns: 1fr;
+  grid-auto-rows: max-content;
   gap: 8px;
+  align-content: start;
   margin: 18px 0 0;
   padding: 0 5px 0 0;
   overflow-y: auto;
@@ -393,11 +395,21 @@
   position: sticky;
   top: 78px;
   align-self: start;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 172px);
+  max-height: calc(100dvh - 172px);
+  overflow: hidden;
   padding: 18px;
 }
 
 .nj-journey-panel .nj-phase-track {
-  max-height: calc(100vh - 190px);
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
 }
 
 .nj-panel-heading p,
@@ -1408,11 +1420,16 @@
 
 @media (max-width: 1240px) {
   .nj-workspace {
-    grid-template-columns: 220px minmax(480px, 1fr);
+    grid-template-columns: 220px minmax(0, 1fr);
   }
 
+  .nj-journey-panel {
+    grid-row: 1 / span 2;
+  }
+
+  .nj-scene,
   .nj-detail-panel {
-    grid-column: 1 / -1;
+    grid-column: 2;
   }
 
   .nj-detail-content {
@@ -1450,6 +1467,9 @@
 
   .nj-journey-panel {
     position: static;
+    display: block;
+    max-height: none;
+    overflow: visible;
   }
 
   .nj-journey-panel .nj-phase-track {
